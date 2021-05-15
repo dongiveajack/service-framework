@@ -1,0 +1,19 @@
+/** Rename the package directory
+ * def packageName = 'com/abhinav/demo'
+ */
+
+def packageName = 'com/abhinav/demo'
+
+task copyDocs(type: Copy, dependsOn: classes) {
+    from 'build/classes/java/main/' << packageName<< '/proto_gen'
+    into 'build/proto-gen/'<< packageName<< '/proto_gen'
+}
+
+task buildClientJar(type: Jar, dependsOn: copyDocs) {
+    baseName = "proto-gen"
+    from 'build/proto-gen/'
+}
+
+artifacts {
+    archives buildClientJar
+}

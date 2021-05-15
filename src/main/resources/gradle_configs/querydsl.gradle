@@ -1,0 +1,20 @@
+def javaGeneratedSources = file("$rootDir/generated-src")
+
+compileJava {
+    doFirst {
+        javaGeneratedSources.deleteDir()
+        javaGeneratedSources.mkdirs()
+    }
+    options.compilerArgs += [
+            '-parameters', '-s', javaGeneratedSources
+    ]
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs += javaGeneratedSources
+            srcDirs += 'src/main/proto_gen'
+        }
+    }
+}
