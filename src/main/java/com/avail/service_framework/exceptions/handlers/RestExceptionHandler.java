@@ -1,6 +1,8 @@
 package com.avail.service_framework.exceptions.handlers;
 
 import com.avail.service_framework.exceptions.ServiceException;
+import com.avail.service_framework.models.responses.BaseResponse;
+import com.avail.service_framework.models.responses.StatusResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -22,21 +24,40 @@ import java.util.NoSuchElementException;
  */
 @Slf4j
 @ControllerAdvice
-public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
+public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     protected ResponseEntity<Object> handleException(RuntimeException ex, WebRequest request) {
         log.error("Error : ", ex);
-        String bodyOfResponse = "Error Occurred " + ex.toString();
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        String errMsg = "Error Occurred " + ex.getMessage();
+        StatusResponse status = StatusResponse.builder()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .statusMessage(errMsg)
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(status)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     @ExceptionHandler(value = {NoSuchElementException.class, EntityNotFoundException.class})
     protected ResponseEntity<Object> handleNoSuchElementException(RuntimeException ex, WebRequest request) {
         log.error("Error : ", ex);
         String bodyOfResponse = "No Such Element Exception " + ex.toString();
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.NO_CONTENT, request);
+
+        StatusResponse status = StatusResponse.builder()
+                .statusCode(HttpStatus.NO_CONTENT.value())
+                .statusMessage(bodyOfResponse)
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(status)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body(response);
     }
 
     @ExceptionHandler(value = {ServiceException.class})
@@ -44,8 +65,17 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         log.error("Error : ", ex);
         String bodyOfResponse = "Service Exception " + ex.toString();
 
-        return handleExceptionInternal(ex, bodyOfResponse,
-                new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
+        StatusResponse status = StatusResponse.builder()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .statusMessage(bodyOfResponse)
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(status)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
 
     @Override
@@ -57,7 +87,19 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
             String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
         });
-        return handleExceptionInternal(ex, errors,
-                new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
+
+        String bodyOfResponse = "Error " + errors.toString();
+
+        StatusResponse statusResponse = StatusResponse.builder()
+                .statusCode(HttpStatus.BAD_REQUEST.value())
+                .statusMessage(bodyOfResponse)
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(statusResponse)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 }

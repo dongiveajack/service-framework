@@ -22,9 +22,9 @@ public class GrpcConfig {
             @Override
             public <ReqT, RespT> ServerCall.Listener<ReqT> interceptCall(ServerCall<ReqT, RespT> call, Metadata headers, ServerCallHandler<ReqT, RespT> next) {
                 Metadata.Key<String> xRequestedByHeaderKey = Metadata.Key.of("X-Requested-By", Metadata.ASCII_STRING_MARSHALLER);
-                long requestId = 0L;
+                String requestId = "System";
                 if (headers.containsKey(xRequestedByHeaderKey) && !StringUtils.isEmpty(headers.get(xRequestedByHeaderKey))) {
-                    requestId = Long.parseLong(headers.get(xRequestedByHeaderKey));
+                    requestId = headers.get(xRequestedByHeaderKey);
                 }
                 Context.setContext(requestId);
                 return next.startCall(call, headers);

@@ -17,8 +17,8 @@ apply plugin: "java"
 apply plugin: "maven"
 apply plugin: "maven-publish"
 
-group "com.avail"
-version "2.3.7"
+group "com.github.ironman19933"
+version "1.0.1"
 
 sourceCompatibility = 1.8
 
@@ -59,8 +59,8 @@ dependencies {
     compile "org.jadira.usertype:usertype.core:7.0.0.CR1"
 }
 
-/*publishing {
-    repositories {
+publishing {
+    /*repositories {
         maven {
             url "s3://avail-java-libraries/releases"
             credentials(AwsCredentials) {
@@ -69,7 +69,7 @@ dependencies {
             }
 
         }
-    }
+    }*/
 
     publications {
         mavenJava(MavenPublication) {
@@ -79,4 +79,4 @@ dependencies {
             from components.java
         }
     }
-}*/
+}

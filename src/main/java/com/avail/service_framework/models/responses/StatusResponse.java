@@ -3,6 +3,7 @@ package com.avail.service_framework.models.responses;
 import com.avail.service_framework.codes.StatusCode;
 import com.avail.service_framework.codes.SuccessCodes;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +13,7 @@ import java.io.Serializable;
  * Created By Abhinav Tripathi
  */
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class StatusResponse implements Serializable {

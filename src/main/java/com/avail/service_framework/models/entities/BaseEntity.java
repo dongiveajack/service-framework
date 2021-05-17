@@ -23,10 +23,10 @@ public abstract class BaseEntity implements Serializable {
     protected Long id;
 
     @Column(name = "created_by", nullable = false, updatable = false)
-    protected Long createdBy;
+    protected String createdBy;
 
     @Column(name = "updated_by", nullable = false)
-    protected Long updatedBy;
+    protected String updatedBy;
 
     @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -48,17 +48,16 @@ public abstract class BaseEntity implements Serializable {
         if (Objects.isNull(createdBy)) {
             if (Objects.nonNull(Context.getContextInfo())) {
                 createdBy = Context.getContextInfo();
-                updatedBy = createdBy;
             } else {
-                createdBy = 0L;
-                updatedBy = createdBy;
+                createdBy = "System";
             }
+            updatedBy = createdBy;
         }
     }
 
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new DateTime();
-        this.updatedBy = Objects.nonNull(Context.getContextInfo()) ? Context.getContextInfo() : 0L;
+        this.updatedBy = Objects.nonNull(Context.getContextInfo()) ? Context.getContextInfo() : "System";
     }
 }
