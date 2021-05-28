@@ -18,7 +18,7 @@ apply plugin: "maven"
 apply plugin: "maven-publish"
 
 group "com.github.ironman19933"
-version "1.0.1"
+version "1.0.3"
 
 sourceCompatibility = 1.8
 

@@ -18,7 +18,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 public class StatusResponse implements Serializable {
     private Integer statusCode;
-    private String statusMessage = "";
+    private String statusMessage;
     private Type statusType;
     private Integer totalCount;
 

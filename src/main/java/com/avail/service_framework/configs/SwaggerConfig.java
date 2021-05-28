@@ -44,9 +44,7 @@ public class SwaggerConfig {
 
     private List<ApiKey> apiKeys() {
         List<ApiKey> apiKeys = new ArrayList<>();
-        apiKeys.add(new ApiKey("secret", "X-Client-Secret", "header"));
-        apiKeys.add(new ApiKey("client_id", "X-Client-Id", "header"));
-        apiKeys.add(new ApiKey("requested_by", "X-Requested-By", "header"));
+        apiKeys.add(new ApiKey("Authorization", "Authorization", "header"));
         return apiKeys;
     }
 
@@ -66,9 +64,9 @@ public class SwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         List<SecurityReference> securityReferences = new ArrayList<>();
-        securityReferences.add(new SecurityReference("secret", authorizationScopes));  //Here we use the same key defined in the security scheme oms_key
-        securityReferences.add(new SecurityReference("client_id", authorizationScopes));
-        securityReferences.add(new SecurityReference("requested_by", authorizationScopes));
+        securityReferences.add(new SecurityReference("authorization", authorizationScopes));  //Here we use the same key defined in the security scheme oms_key
+        // securityReferences.add(new SecurityReference("client_id", authorizationScopes));
+        //securityReferences.add(new SecurityReference("requested_by", authorizationScopes));
         return securityReferences;
     }
 
@@ -83,7 +81,7 @@ public class SwaggerConfig {
     public SecurityConfiguration security() {
         return SecurityConfigurationBuilder.builder()
                 .clientId("X-Client-Id")
-                .clientSecret("X-Auth-Token")
+                .clientSecret("Authorization")
                 .scopeSeparator(" ")
                 .useBasicAuthenticationWithAccessCodeGrant(true)
                 .build();
