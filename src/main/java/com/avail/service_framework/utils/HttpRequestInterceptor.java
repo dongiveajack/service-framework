@@ -10,7 +10,7 @@ import java.util.Objects;
 /**
  * Created By Abhinav Tripathi on 2019-08-30
  */
-@Slf4j
+/*@Slf4j
 public class HttpRequestInterceptor implements HandlerInterceptor {
 
     @Override
@@ -19,4 +19,4 @@ public class HttpRequestInterceptor implements HandlerInterceptor {
         Context.setContext(Objects.nonNull(requestId) ? requestId : "System");
         return Boolean.TRUE;
     }
-}
+}*/

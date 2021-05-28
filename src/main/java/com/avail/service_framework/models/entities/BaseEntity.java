@@ -46,8 +46,8 @@ public abstract class BaseEntity implements Serializable {
     protected void onCreate() {
         updatedAt = createdAt = (Objects.isNull(createdAt) ? new DateTime() : createdAt);
         if (Objects.isNull(createdBy)) {
-            if (Objects.nonNull(Context.getContextInfo())) {
-                createdBy = Context.getContextInfo();
+            if (Objects.nonNull(Context.getUserId())) {
+                createdBy = Context.getUserId();
             } else {
                 createdBy = "System";
             }
@@ -58,6 +58,6 @@ public abstract class BaseEntity implements Serializable {
     @PreUpdate
     protected void onUpdate() {
         updatedAt = new DateTime();
-        this.updatedBy = Objects.nonNull(Context.getContextInfo()) ? Context.getContextInfo() : "System";
+        this.updatedBy = Objects.nonNull(Context.getUserId()) ? Context.getUserId() : "System";
     }
 }

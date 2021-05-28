@@ -6,17 +6,22 @@ import java.util.Objects;
  * Created By Abhinav Tripathi on 2019-05-10
  */
 public class Context {
-    private static ThreadLocal<String> user;
+    private final static ThreadLocal<String> userToken = new ThreadLocal<>();
+    private final static ThreadLocal<String> userId = new ThreadLocal<>();
 
-    public static String getContextInfo() {
-        if (Objects.nonNull(user)) {
-            return user.get();
-        }
-        return null;
+    public static String getToken() {
+        return userToken.get();
     }
 
-    public static void setContext(String userId) {
-        user = new ThreadLocal<>();
-        user.set(userId);
+    public static String getUserId() {
+        return userId.get();
+    }
+
+    public static void setUserToken(String token) {
+        userToken.set(token);
+    }
+
+    public static void setUserId(String availUserId) {
+        userId.set(availUserId);
     }
 }

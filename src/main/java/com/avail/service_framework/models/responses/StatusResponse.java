@@ -19,7 +19,7 @@ import java.io.Serializable;
 public class StatusResponse implements Serializable {
     private Integer statusCode;
     private String statusMessage = "";
-    private Type statusType = Type.SUCCESS;
+    private Type statusType;
     private Integer totalCount;
 
     public enum Type {

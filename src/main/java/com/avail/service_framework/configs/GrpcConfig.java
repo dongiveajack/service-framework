@@ -26,7 +26,7 @@ public class GrpcConfig {
                 if (headers.containsKey(xRequestedByHeaderKey) && !StringUtils.isEmpty(headers.get(xRequestedByHeaderKey))) {
                     requestId = headers.get(xRequestedByHeaderKey);
                 }
-                Context.setContext(requestId);
+                Context.setUserId(requestId);
                 return next.startCall(call, headers);
             }
         };

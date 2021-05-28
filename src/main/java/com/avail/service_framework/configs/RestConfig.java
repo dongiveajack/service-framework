@@ -23,7 +23,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Configuration
 public class RestConfig {
-    @Bean
+    /*@Bean
     public ClientHttpRequestFactory getClientHttpRequestFactory() {
         int timeout = 5000;
         HttpComponentsClientHttpRequestFactory clientHttpRequestFactory
@@ -38,7 +38,7 @@ public class RestConfig {
                 .requestFactory(new ClientHttpRequestFactorySupplier())
                 //.interceptors(getHttpRequestInterceptor())
                 .build();
-    }
+    }*/
 
     /*private ClientHttpRequestInterceptor getHttpRequestInterceptor() {
         return (request, body, execution) -> {
