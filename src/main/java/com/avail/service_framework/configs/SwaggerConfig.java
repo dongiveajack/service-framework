@@ -64,7 +64,7 @@ public class SwaggerConfig {
         AuthorizationScope[] authorizationScopes = new AuthorizationScope[1];
         authorizationScopes[0] = authorizationScope;
         List<SecurityReference> securityReferences = new ArrayList<>();
-        securityReferences.add(new SecurityReference("authorization", authorizationScopes));  //Here we use the same key defined in the security scheme oms_key
+        securityReferences.add(new SecurityReference("Authorization", authorizationScopes));  //Here we use the same key defined in the security scheme oms_key
         // securityReferences.add(new SecurityReference("client_id", authorizationScopes));
         //securityReferences.add(new SecurityReference("requested_by", authorizationScopes));
         return securityReferences;
