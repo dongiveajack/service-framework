@@ -2,6 +2,7 @@ package com.avail.service_framework.models.responses;
 
 import com.avail.service_framework.codes.StatusCode;
 import com.avail.service_framework.codes.SuccessCodes;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -16,6 +17,7 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class StatusResponse implements Serializable {
     private Integer statusCode;
     private String statusMessage;

@@ -287,7 +287,7 @@ public class SearchHelper {
                 }
                 break;
             case JSONB_PATH_EXISTS:
-                for (String filter: value.split(JSONB_OPERATOR_AND_DELIMITER)) {
+                for (String filter : value.split(JSONB_OPERATOR_AND_DELIMITER)) {
                     expressionList.clear();
                     expressionList.add(path);
                     for (String jsonToken : filter.split(IN_VALUES_DELIMITER)) {
@@ -298,17 +298,18 @@ public class SearchHelper {
                 break;
 
             case JSONB_PATH_EQUALS:
-                for (String filter: value.split(JSONB_OPERATOR_AND_DELIMITER)) {
+                for (String filter : value.split(JSONB_OPERATOR_AND_DELIMITER)) {
                     expressionList.clear();
                     expressionList.add(path);
                     for (String jsonToken : filter.split(JSONB_OPERATOR_KEY_VALUE_DELIMITER)[0].split(IN_VALUES_DELIMITER)) {
                         expressionList.add(builder.literal(jsonToken));
                     }
-                    predicates.add(builder.equal(builder.function("jsonb_extract_path_text", String.class, expressionList.toArray(new Expression[0])), filter.split(JSONB_OPERATOR_KEY_VALUE_DELIMITER)[1]));
+                    String[] valuesTemp = filter.split(JSONB_OPERATOR_KEY_VALUE_DELIMITER)[1].split(IN_VALUES_DELIMITER);
+                    predicates.add(builder.function("jsonb_extract_path_text", String.class, expressionList.toArray(new Expression[0])).in((Object[]) valuesTemp));
                 }
                 break;
             case JSONB_PATH_CONTAINS:
-                for (String filter: value.split(JSONB_OPERATOR_AND_DELIMITER)) {
+                for (String filter : value.split(JSONB_OPERATOR_AND_DELIMITER)) {
                     expressionList.clear();
                     expressionList.add(path);
                     for (String jsonToken : filter.split(JSONB_OPERATOR_KEY_VALUE_DELIMITER)[0].split(IN_VALUES_DELIMITER)) {
