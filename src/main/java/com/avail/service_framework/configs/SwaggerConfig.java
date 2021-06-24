@@ -2,6 +2,7 @@ package com.avail.service_framework.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
 import springfox.documentation.builders.ApiInfoBuilder;
 import springfox.documentation.builders.PathSelectors;
@@ -24,6 +25,7 @@ import static springfox.documentation.builders.PathSelectors.regex;
 /**
  * Created By Abhinav Tripathi on 2019-09-13
  */
+@Profile({"!prod"})
 @Configuration
 @EnableSwagger2
 public class SwaggerConfig {
