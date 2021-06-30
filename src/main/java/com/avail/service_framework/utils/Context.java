@@ -24,4 +24,9 @@ public class Context {
     public static void setUserId(String availUserId) {
         userId.set(availUserId);
     }
+
+    public static void clean() {
+        userToken.remove();
+        userId.remove();
+    }
 }
