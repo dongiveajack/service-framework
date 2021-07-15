@@ -1,5 +1,6 @@
 package com.avail.service_framework.controllers;
 
+import com.avail.service_framework.aop.Authenticate;
 import com.avail.service_framework.services.BaseService;
 import com.avail.service_framework.codes.SuccessCodes;
 import com.avail.service_framework.models.entities.BaseEntity;
@@ -27,6 +28,7 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
 
     protected abstract R createResponse(List<M> entryList);
 
+    @Authenticate
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     public R findById(@PathVariable Long id) throws RuntimeException {
         M result = service.find(id);
@@ -36,6 +38,7 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
         return response;
     }
 
+    @Authenticate
     @RequestMapping(value = "", method = RequestMethod.POST)
     public R save(@RequestBody M input) throws Exception {
         M result = getService().save(input);
@@ -44,6 +47,7 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
         return response;
     }
 
+    @Authenticate
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
     public R update(@RequestBody M input, @PathVariable Long id) throws Exception {
         M result = getService().update(input, id);
@@ -52,6 +56,7 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
         return response;
     }
 
+    @Authenticate
     @RequestMapping(value = "/bulk", method = RequestMethod.PUT)
     public R bulkUpdate(@RequestBody List<M> entries) throws Exception {
         List<M> updatedEntries = getService().bulkCreateOrUpdate(entries);
@@ -60,6 +65,7 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
         return response;
     }
 
+    @Authenticate
     @RequestMapping(value = "/search", method = RequestMethod.GET)
     public R search(@RequestParam("filters") String filters,
                     @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
@@ -72,6 +78,7 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
         return response;
     }
 
+    @Authenticate
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public R customSearch(@RequestBody SearchEntry searchEntry) throws Exception {
         Page<M> searchResults = service.search(searchEntry);
