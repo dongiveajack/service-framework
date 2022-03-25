@@ -8,6 +8,7 @@ import java.util.Objects;
 public class Context {
     private final static ThreadLocal<String> userToken = new ThreadLocal<>();
     private final static ThreadLocal<String> userId = new ThreadLocal<>();
+    private final static ThreadLocal<Boolean> dashboardRequest = new ThreadLocal<>();
 
     public static String getToken() {
         return userToken.get();
@@ -15,6 +16,12 @@ public class Context {
 
     public static String getUserId() {
         return userId.get();
+    }
+
+    public static Boolean isDashboardRequest() {return dashboardRequest.get(); }
+
+    public static void setDashboardRequest(Boolean isDashboard) {
+        dashboardRequest.set(isDashboard);
     }
 
     public static void setUserToken(String token) {
@@ -28,5 +35,6 @@ public class Context {
     public static void clean() {
         userToken.remove();
         userId.remove();
+        dashboardRequest.remove();
     }
 }
