@@ -64,6 +64,10 @@ public class SearchHelper {
             String[] filterArray = filters.split(SEARCH_DELIMITER);
             for (String filter : filterArray) {
                 try {
+                    // Skip over the filter if it's empty
+                    if (filter.isEmpty()){
+                        continue;
+                    }
                     String key, value;
                     int index = filter.indexOf(KEY_VALUE_DELIMITER);
                     if (index == -1) {
