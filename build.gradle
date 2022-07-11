@@ -5,22 +5,19 @@ buildscript {
 }
 
 plugins {
-    id "java"
+    id 'java'
+    id 'maven-publish'
 }
 
 ext {
-    fasterxmlJackson = "2.9.6"
-    springBootVersion = "2.1.3.RELEASE"
+    fasterxmlJackson = "2.13.3"
+    springBootVersion = "2.7.1"
 }
-
-apply plugin: "java"
-apply plugin: "maven"
-apply plugin: "maven-publish"
 
 group "com.github.ironman19933"
 version "1.3"
 
-sourceCompatibility = 1.8
+sourceCompatibility = '11'
 
 repositories {
     mavenLocal()
@@ -29,38 +26,35 @@ repositories {
 }
 
 dependencies {
-    compile "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
-    compile "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
-    compile "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}"
-    compile "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
-    compile("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${fasterxmlJackson}",
+    implementation "org.springframework.boot:spring-boot-starter-web:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}"
+    implementation "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${fasterxmlJackson}",
             "com.fasterxml.jackson.datatype:jackson-datatype-json-org:${fasterxmlJackson}",
             "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlJackson}",
             "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlJackson}")
-    compile "org.apache.httpcomponents:httpclient:4.5.2"
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+    implementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    implementation 'mysql:mysql-connector-java:8.0.29'
 
-    compile "com.querydsl:querydsl-jpa:4.1.3"
-    compile "com.querydsl:querydsl-apt:4.1.3:jpa"
+    compileOnly 'org.projectlombok:lombok:1.18.24'
+    annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
-    compile "mysql:mysql-connector-java:8.0.15"
+    implementation 'org.mapstruct:mapstruct:1.5.2.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
 
-    compile "org.mapstruct:mapstruct-jdk8:1.3.1.Final"
-    compileOnly "org.projectlombok:lombok:1.18.4"
+    implementation 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
 
-    compileOnly "org.mapstruct:mapstruct-processor:1.3.1.Final"
-
-    compile "org.mapstruct:mapstruct-processor:1.3.1.Final", "org.projectlombok:lombok:1.18.4"
-    compile group: "io.spring.gradle", name: "dependency-management-plugin", version: "0.5.3.RELEASE"
-
-    compile "io.springfox:springfox-swagger2:2.9.2"
-    compile "io.springfox:springfox-swagger-ui:2.9.2"
-    compile "io.github.lognet:grpc-spring-boot-starter:3.4.3"
-    compile "org.apache.commons:commons-lang3:3.0"
-    compile "org.jadira.usertype:usertype.core:7.0.0.CR1"
+    implementation "io.springfox:springfox-swagger2:2.9.2"
+    implementation "io.springfox:springfox-swagger-ui:2.9.2"
+    implementation 'io.github.lognet:grpc-spring-boot-starter:4.7.0'
+    implementation 'org.apache.commons:commons-lang3:3.12.0'
+    implementation "org.jadira.usertype:usertype.core:7.0.0.CR1"
 }
 
-publishing {
-    /*repositories {
+/*publishing {
+    *//*repositories {
         maven {
             url "s3://avail-java-libraries/releases"
             credentials(AwsCredentials) {
@@ -69,7 +63,7 @@ publishing {
             }
 
         }
-    }*/
+    }*//*
 
     publications {
         mavenJava(MavenPublication) {
@@ -79,4 +73,4 @@ publishing {
             from components.java
         }
     }
-}
+}*/

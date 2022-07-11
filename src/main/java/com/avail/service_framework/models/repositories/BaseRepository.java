@@ -8,6 +8,5 @@ import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 /**
  * Created By Abhinav Tripathi
  */
-public interface BaseRepository<M extends BaseEntity>
-        extends JpaRepository<M, Long>, JpaSpecificationExecutor<M>, QuerydslPredicateExecutor<M> {
+public interface BaseRepository<M extends BaseEntity> extends JpaRepository<M, Long>, JpaSpecificationExecutor<M> {
 }
