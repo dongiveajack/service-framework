@@ -14,8 +14,8 @@ ext {
     springBootVersion = "2.7.1"
 }
 
-group "com.github.ironman19933"
-version "2.0.0"
+group "org.trips"
+version "2.0.2"
 
 sourceCompatibility = '11'
 
@@ -53,18 +53,7 @@ dependencies {
     implementation "org.jadira.usertype:usertype.core:7.0.0.CR1"
 }
 
-/*publishing {
-    *//*repositories {
-        maven {
-            url "s3://avail-java-libraries/releases"
-            credentials(AwsCredentials) {
-                accessKey awsAccessKey
-                secretKey awsSecretKey
-            }
-
-        }
-    }*//*
-
+publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId group
@@ -73,4 +62,4 @@ dependencies {
             from components.java
         }
     }
-}*/
+}
