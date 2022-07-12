@@ -39,7 +39,7 @@ dependencies {
     api 'org.apache.httpcomponents:httpclient:4.5.13'
     api 'mysql:mysql-connector-java:8.0.29'
 
-    compileOnly 'org.projectlombok:lombok:1.18.24'
+    api 'org.projectlombok:lombok:1.18.24'
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
 
     api 'org.mapstruct:mapstruct:1.5.2.Final'
