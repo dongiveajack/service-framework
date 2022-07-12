@@ -18,7 +18,7 @@ import java.util.Objects;
 public abstract class BaseEntity implements Serializable {
     @Id
     @GeneratedValue(generator = "idGenerator", strategy = GenerationType.SEQUENCE)
-    @GenericGenerator(name = "idGenerator", strategy = "com.avail.service_framework.models.IdGenerator")
+    @GenericGenerator(name = "idGenerator", strategy = "org.trips.service_framework.models.IdGenerator")
     @Column(name = "id", updatable = false)
     protected Long id;
 
