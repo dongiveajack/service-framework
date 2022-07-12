@@ -15,8 +15,8 @@ ext {
     springBootVersion = "2.7.1"
 }
 
-group "org.trips"
-version "2.0.2"
+group "com.github.ironman19933"
+version "2.1.2"
 
 sourceCompatibility = '11'
 
@@ -47,8 +47,8 @@ dependencies {
 
     api 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
 
-    api "io.springfox:springfox-swagger2:2.9.2"
-    api "io.springfox:springfox-swagger-ui:2.9.2"
+    api 'io.springfox:springfox-boot-starter:3.0.0'
+
     api 'io.github.lognet:grpc-spring-boot-starter:4.7.0'
     api 'org.apache.commons:commons-lang3:3.12.0'
     api "org.jadira.usertype:usertype.core:7.0.0.CR1"
