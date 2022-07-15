@@ -16,14 +16,13 @@ ext {
 }
 
 group "com.github.ironman19933"
-version "2.1.2"
+version "2.1.3"
 
 sourceCompatibility = '11'
 
 repositories {
     mavenLocal()
     mavenCentral()
-    jcenter()
 }
 
 dependencies {
@@ -52,6 +51,15 @@ dependencies {
     api 'io.github.lognet:grpc-spring-boot-starter:4.7.0'
     api 'org.apache.commons:commons-lang3:3.12.0'
     api "org.jadira.usertype:usertype.core:7.0.0.CR1"
+
+    //querydsl
+    api "com.querydsl:querydsl-jpa:5.0.0"
+    annotationProcessor(
+            platform("org.springframework.boot:spring-boot-dependencies:2.7.1"),
+            "javax.persistence:javax.persistence-api",
+            "javax.annotation:javax.annotation-api",
+            "com.querydsl:querydsl-apt:5.0.0:jpa"
+    )
 }
 
 publishing {
