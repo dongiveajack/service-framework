@@ -42,6 +42,14 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "version")
     protected Long version = 0L;
 
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "deleted_at")
+    @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
+    protected DateTime deletedAt;
+
+    @Column(name = "deleted_by")
+    protected String deletedBy;
+
     @PrePersist
     protected void onCreate() {
         updatedAt = createdAt = (Objects.isNull(createdAt) ? new DateTime() : createdAt);
@@ -60,4 +68,5 @@ public abstract class BaseEntity implements Serializable {
         updatedAt = new DateTime();
         this.updatedBy = Objects.nonNull(Context.getUserId()) ? Context.getUserId() : "System";
     }
+
 }

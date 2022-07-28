@@ -1,9 +1,11 @@
 package org.trips.service_framework.services;
 
+import org.joda.time.DateTime;
 import org.trips.service_framework.models.CustomSearchSpecification;
 import org.trips.service_framework.models.entities.BaseEntity;
 import org.trips.service_framework.models.entries.SearchEntry;
 import org.trips.service_framework.models.repositories.BaseRepository;
+import org.trips.service_framework.utils.Context;
 import org.trips.service_framework.utils.SearchHelper;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +45,7 @@ public abstract class BaseService<Entity extends BaseEntity> {
 
     @Transactional(rollbackFor = RuntimeException.class)
     public Entity update(Entity entry, Long id) throws RuntimeException {
-        Entity entity = getRepository().getOne(id);
+        Entity entity = getRepository().getReferenceById(id);
         return getRepository().save(merge(entry, entity));
     }
 
@@ -103,5 +105,12 @@ public abstract class BaseService<Entity extends BaseEntity> {
                 }
             }
         }
+    }
+    @Transactional(readOnly = true)
+    public Entity delete(Long id) {
+        Entity entity = getRepository().getReferenceById(id);
+        entity.setDeletedAt(DateTime.now());
+        entity.setDeletedBy(Objects.nonNull(Context.getUserId()) ? Context.getUserId() : "System");
+        return getRepository().save(entity);
     }
 }
