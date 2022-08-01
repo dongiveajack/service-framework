@@ -57,6 +57,15 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
     }
 
     @Authenticate
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    public R delete(@PathVariable Long id) throws Exception {
+        M result = getService().delete(id);
+        R response = createResponse(Collections.singletonList(result));
+        response.setStatus(new StatusResponse(SuccessCodes.OK, 1));
+        return response;
+    }
+
+    @Authenticate
     @RequestMapping(value = "/bulk", method = RequestMethod.PUT)
     public R bulkUpdate(@RequestBody List<M> entries) throws Exception {
         List<M> updatedEntries = getService().bulkCreateOrUpdate(entries);
