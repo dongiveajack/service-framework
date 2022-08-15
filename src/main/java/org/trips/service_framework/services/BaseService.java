@@ -106,7 +106,7 @@ public abstract class BaseService<Entity extends BaseEntity> {
             }
         }
     }
-    @Transactional(readOnly = true)
+    @Transactional(rollbackFor = RuntimeException.class)
     public Entity delete(Long id) {
         Entity entity = getRepository().getReferenceById(id);
         entity.setDeletedAt(DateTime.now());
