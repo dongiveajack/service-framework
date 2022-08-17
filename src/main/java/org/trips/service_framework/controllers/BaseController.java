@@ -76,7 +76,7 @@ public abstract class BaseController<R extends BaseResponse, M extends BaseEntit
 
     @Authenticate
     @RequestMapping(value = "/search", method = RequestMethod.GET)
-    public R search(@RequestParam("filters") String filters,
+    public R search(@RequestParam(value = "filters", required = false) String filters,
                     @RequestParam(value = "page", defaultValue = "0", required = false) Integer page,
                     @RequestParam(value = "fetchSize", defaultValue = "1000", required = false) Integer fetchSize,
                     @RequestParam(value = "sortBy", required = false) String sortBy,
