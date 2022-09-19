@@ -205,7 +205,7 @@ public class SearchHelper {
                     predicates.add(path.in(Enum.valueOf(path.getJavaType(), value)));
                 } else if (Date.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.equal((Expression) path, parseDate(value).toDate()));
-                }else if (LocalDate.class.isAssignableFrom(path.getJavaType())) {
+                } else if (LocalDate.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.equal((Expression) path, parseDate(value).toLocalDate()));
                 } else if (DateTime.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.equal((Expression) path, parseDate(value)));
