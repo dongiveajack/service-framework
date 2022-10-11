@@ -33,13 +33,13 @@ import static springfox.documentation.builders.PathSelectors.regex;
 public class SwaggerConfig {
     @Bean
     public Docket api() {
-        return new Docket(DocumentationType.SWAGGER_2)
+        return new Docket(DocumentationType.OAS_30)
                 .apiInfo(apiInfo()).pathMapping("/")
                 .select()
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build()
-                .securitySchemes(Arrays.asList(new ApiKey("Authorization", "Authorization", "header")))
+                .securitySchemes(List.of(new ApiKey("Authorization", "Authorization", "header")))
                 .securityContexts(securityContexts())
                 .produces(Collections.singleton(MediaType.APPLICATION_JSON_VALUE))
                 .consumes(Collections.singleton(MediaType.APPLICATION_JSON_VALUE))
