@@ -222,7 +222,7 @@ public class SearchHelper {
                 } else if (Date.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.notEqual((Expression) path, parseDate(value).toDate()));
                 } else if (LocalDate.class.isAssignableFrom(path.getJavaType())) {
-                    predicates.add(builder.equal((Expression) path, parseDate(value).toLocalDate()));
+                    predicates.add(builder.notEqual((Expression) path, parseDate(value).toLocalDate()));
                 } else if (DateTime.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.notEqual((Expression) path, parseDate(value)));
                 } else if (Boolean.class.isAssignableFrom(path.getJavaType())) {
@@ -242,7 +242,7 @@ public class SearchHelper {
                 if (Date.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.greaterThan((Expression) path, parseDate(value).toDate()));
                 } else if (LocalDate.class.isAssignableFrom(path.getJavaType())) {
-                    predicates.add(builder.equal((Expression) path, parseDate(value).toLocalDate()));
+                    predicates.add(builder.greaterThan((Expression) path, parseDate(value).toLocalDate()));
                 } else if (DateTime.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.greaterThan((Expression) path, parseDate(value)));
                 } else {
@@ -253,7 +253,7 @@ public class SearchHelper {
                 if (Date.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.lessThan((Expression) path, parseDate(value).toDate()));
                 } else if (LocalDate.class.isAssignableFrom(path.getJavaType())) {
-                    predicates.add(builder.equal((Expression) path, parseDate(value).toLocalDate()));
+                    predicates.add(builder.lessThan((Expression) path, parseDate(value).toLocalDate()));
                 } else if (DateTime.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.lessThan((Expression) path, parseDate(value)));
                 } else {
@@ -264,7 +264,7 @@ public class SearchHelper {
                 if (Date.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.greaterThanOrEqualTo((Expression) path, parseDate(value).toDate()));
                 } else if (LocalDate.class.isAssignableFrom(path.getJavaType())) {
-                    predicates.add(builder.equal((Expression) path, parseDate(value).toLocalDate()));
+                    predicates.add(builder.greaterThanOrEqualTo((Expression) path, parseDate(value).toLocalDate()));
                 } else if (DateTime.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.greaterThanOrEqualTo((Expression) path, parseDate(value)));
                 } else {
@@ -275,7 +275,7 @@ public class SearchHelper {
                 if (Date.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.lessThanOrEqualTo((Expression) path, parseDate(value).toDate()));
                 } else if (LocalDate.class.isAssignableFrom(path.getJavaType())) {
-                    predicates.add(builder.equal((Expression) path, parseDate(value).toLocalDate()));
+                    predicates.add(builder.lessThanOrEqualTo((Expression) path, parseDate(value).toLocalDate()));
                 } else if (DateTime.class.isAssignableFrom(path.getJavaType())) {
                     predicates.add(builder.lessThanOrEqualTo((Expression) path, parseDate(value)));
                 } else {
