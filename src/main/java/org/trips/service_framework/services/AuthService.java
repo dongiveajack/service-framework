@@ -2,16 +2,24 @@ package org.trips.service_framework.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.Cache;
+import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.trips.service_framework.clients.RealmClient;
+import org.trips.service_framework.clients.request.RealmUserSearchRequest;
 import org.trips.service_framework.clients.response.RealmClientsVerifyResponse;
 import org.trips.service_framework.clients.response.RealmSessionInfoResponse;
+import org.trips.service_framework.clients.response.RealmUser;
+import org.trips.service_framework.clients.response.RealmUserResponse;
+import org.trips.service_framework.configs.CacheConfig;
 import org.trips.service_framework.exceptions.AccessDeniedException;
+import org.trips.service_framework.exceptions.CacheNotFoundException;
+import org.trips.service_framework.exceptions.NotFoundException;
 import org.trips.service_framework.utils.StringUtils;
 
 import javax.servlet.http.Cookie;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author Anupam Dagar on 02/11/22
@@ -21,6 +29,7 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class AuthService {
     private final RealmClient realmClient;
+    private final CacheManager cacheManager;
 
     public String authenticateCookieSession(List<Cookie> cookies) {
         StringBuilder cookieBuilder = new StringBuilder();
@@ -46,39 +55,24 @@ public class AuthService {
         return response.getData().getClientId();
     }
 
-    /*//@Cacheable(cacheNames = CacheConfig.REALM_USER_CACHE, unless = "#result != null")
-    public UserInfo getUser(String userId) {
-        RealmUserSearchResponse response = realmClient.getUsers(RealmUserSearchBody.of(List.of(userId)));
-        if (response.getStatus().getCode() != 200) {
-            return null;
-        }
+    public Map<String, RealmUser> getUsers(List<String> ids) {
+        Cache realmUserCache = Optional.ofNullable(cacheManager.getCache(CacheConfig.REALM_USER_CACHE))
+                .orElseThrow(() -> CacheNotFoundException.ofName(CacheConfig.REALM_USER_CACHE));
 
-        return Optional.ofNullable(response.getData())
-                .map(RealmUserSearchResponse.Data::getWhitelistedUsers)
-                .orElseThrow(() -> new NotFoundException("No whitelisted user data found in response"))
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("No valid whitelisted user data found in response for ID: %s", userId)));
-    }
-
-    public Map<String, UserInfo> getUsers(List<String> ids) {
-//        Cache realmUserCache = Optional.ofNullable(cacheManager.getCache(CacheConfig.REALM_USER_CACHE)).orElseThrow(() -> CacheNotFoundException.ofName(CacheConfig.REALM_USER_CACHE));
-
-        List<String> nonCachedUserIds = ids.stream()
+        Set<String> nonCachedUserIds = ids.stream()
                 .filter(id -> Objects.isNull(realmUserCache.get(id)))
-                .collect(Collectors.toList());
+                .collect(Collectors.toSet());
 
-        RealmUserSearchResponse response = realmClient.getUsers(RealmUserSearchBody.of(nonCachedUserIds));
+        RealmUserResponse response = realmClient.getUsers(RealmUserSearchRequest.of(nonCachedUserIds));
 
-        Map<String, UserInfo> uncachedUserInfoList = Optional.ofNullable(response.getData())
-                .map(RealmUserSearchResponse.Data::getWhitelistedUsers)
+        Map<String, RealmUser> uncachedUserInfoList = Optional.ofNullable(response.getData())
+                .map(RealmUserResponse.Data::getWhitelistedUsers)
                 .orElseThrow(() -> new NotFoundException("No whitelisted user data found in response"))
                 .stream()
-                .collect(Collectors.toMap(UserInfo::getId, x -> x));
+                .collect(Collectors.toMap(RealmUser::getId, x -> x));
 
         uncachedUserInfoList.forEach(realmUserCache::put);
 
-        return ids.stream().collect(Collectors.toMap(x -> x, x -> Optional.ofNullable(realmUserCache.get(x, UserInfo.class)).orElse(new UserInfo())));
-    }*/
+        return ids.stream().collect(Collectors.toMap(x -> x, x -> Optional.ofNullable(realmUserCache.get(x, RealmUser.class)).orElse(new RealmUser())));
+    }
 }

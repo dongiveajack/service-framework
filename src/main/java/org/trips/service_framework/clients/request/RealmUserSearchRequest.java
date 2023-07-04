@@ -3,6 +3,7 @@ package org.trips.service_framework.clients.request;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 import java.util.Set;
@@ -14,8 +15,9 @@ import java.util.Set;
  **/
 
 @Data
+@NoArgsConstructor
 @AllArgsConstructor
-public class RealmUserSearchBody {
+public class RealmUserSearchRequest {
     @JsonProperty
     public String email;
     @JsonProperty("ids")
@@ -24,4 +26,13 @@ public class RealmUserSearchBody {
     public int fetchSize;
     @JsonProperty("page")
     public int page;
+
+    public RealmUserSearchRequest(Set<String> ids) {
+        this.ids = ids;
+    }
+
+    public static RealmUserSearchRequest of(Set<String> ids) {
+        return new RealmUserSearchRequest(ids);
+    }
+
 }

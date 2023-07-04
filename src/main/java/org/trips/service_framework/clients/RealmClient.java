@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.trips.service_framework.clients.request.RealmUserSearchBody;
+import org.trips.service_framework.clients.request.RealmUserSearchRequest;
 import org.trips.service_framework.clients.response.RealmClientsVerifyResponse;
 import org.trips.service_framework.clients.response.RealmSessionInfoResponse;
 import org.trips.service_framework.clients.response.RealmUserResponse;
@@ -26,5 +26,5 @@ public interface RealmClient {
     RealmClientsVerifyResponse verifyClientIdSecret(@RequestHeader("Client-Id") String clientId, @RequestHeader("Client-Secret") String clientSecret);
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/whitelisted-users/search")
-    RealmUserResponse getUsers(@RequestBody RealmUserSearchBody searchBody);
+    RealmUserResponse getUsers(@RequestBody RealmUserSearchRequest searchBody);
 }

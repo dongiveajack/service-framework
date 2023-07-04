@@ -1,5 +1,7 @@
 package org.trips.service_framework.models.entities;
 
+import org.trips.service_framework.aop.UserField;
+import org.trips.service_framework.clients.response.RealmUser;
 import org.trips.service_framework.utils.Context;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -8,6 +10,8 @@ import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 /**
@@ -22,9 +26,11 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "id", updatable = false)
     protected Long id;
 
+    @UserField
     @Column(name = "created_by", nullable = false, updatable = false)
     protected String createdBy;
 
+    @UserField
     @Column(name = "updated_by", nullable = false)
     protected String updatedBy;
 
@@ -47,8 +53,12 @@ public abstract class BaseEntity implements Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     protected DateTime deletedAt;
 
+    //@UserField
     @Column(name = "deleted_by")
     protected String deletedBy;
+
+    @Transient
+    private Map<String, RealmUser> userInfo;
 
     @PrePersist
     protected void onCreate() {
