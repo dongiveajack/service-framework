@@ -29,21 +29,20 @@ dependencies {
     api "org.springframework.boot:spring-boot-starter-data-jpa:${springBootVersion}"
     api "org.springframework.boot:spring-boot-starter-data-redis:${springBootVersion}"
     api "org.springframework.boot:spring-boot-starter-actuator:${springBootVersion}"
-    api ("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${fasterxmlJackson}",
+    api("com.fasterxml.jackson.datatype:jackson-datatype-hibernate5:${fasterxmlJackson}",
             "com.fasterxml.jackson.datatype:jackson-datatype-json-org:${fasterxmlJackson}",
             "com.fasterxml.jackson.datatype:jackson-datatype-joda:${fasterxmlJackson}",
             "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:${fasterxmlJackson}")
     api 'javax.validation:validation-api:2.0.1.Final'
-    api 'org.apache.httpcomponents:httpclient:4.5.13'
-    api 'mysql:mysql-connector-java:8.0.29'
+    api 'org.apache.httpcomponents:httpclient:4.5.14'
 
-    api 'org.projectlombok:lombok:1.18.24'
-    annotationProcessor 'org.projectlombok:lombok:1.18.24'
+    api 'org.projectlombok:lombok:1.18.26'
+    annotationProcessor 'org.projectlombok:lombok:1.18.26'
 
-    api 'org.mapstruct:mapstruct:1.5.2.Final'
-    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.2.Final'
+    api 'org.mapstruct:mapstruct:1.5.3.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
 
-    api 'io.spring.gradle:dependency-management-plugin:1.0.11.RELEASE'
+    api 'io.spring.gradle:dependency-management-plugin:1.0.15.RELEASE'
 
     api 'io.springfox:springfox-boot-starter:3.0.0'
 
@@ -51,8 +50,15 @@ dependencies {
     api 'org.apache.commons:commons-lang3:3.12.0'
     api "org.jadira.usertype:usertype.core:7.0.0.CR1"
 
-    //querydsl
     api "com.querydsl:querydsl-jpa:5.0.0"
+
+    api 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5'
+
+    api 'com.google.guava:guava:32.0.1-jre'
+
+    api 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5'
+
+
     annotationProcessor(
             platform("org.springframework.boot:spring-boot-dependencies:2.7.1"),
             "javax.persistence:javax.persistence-api",
