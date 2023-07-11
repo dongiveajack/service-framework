@@ -52,12 +52,17 @@ dependencies {
 
     api "com.querydsl:querydsl-jpa:5.0.0"
 
-    api 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5'
-
     api 'com.google.guava:guava:32.0.1-jre'
 
     api 'org.springframework.cloud:spring-cloud-starter-openfeign:3.1.5'
     api 'net.sf.ehcache:ehcache:2.10.9.2'
+
+    api 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    api 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.6.RELEASE'
+
+    api 'com.vladmihalcea:hibernate-types-52:2.20.0'
+
+    api 'org.flywaydb:flyway-core:9.8.1'
 
 
     annotationProcessor(

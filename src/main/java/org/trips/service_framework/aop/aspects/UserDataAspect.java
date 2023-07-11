@@ -1,6 +1,5 @@
 package org.trips.service_framework.aop.aspects;
 
-import com.google.common.collect.Lists;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +26,7 @@ import static org.trips.service_framework.utils.ReflectionUtils.MethodType.GETTE
 
 /**
  * @author : hardikphalet
- * @mailto : hardik.phalet@captainfresh.in (@gmail.com)
+ * @mailto : hardik.phalet@captainfresh.in
  * @created : 16/06/23, Friday
  **/
 
@@ -49,10 +48,10 @@ public class UserDataAspect {
             return joinPoint.proceed();
         }
 
-        Object joinPointResult = joinPoint.proceed();
+        Object response = joinPoint.proceed();
 
-        Method getDataMethod = joinPointResult.getClass().getDeclaredMethod("getData");
-        Object extractedData = getDataMethod.invoke(joinPointResult);
+        Method getDataMethod = response.getClass().getDeclaredMethod("getData");
+        Object extractedData = getDataMethod.invoke(response);
 
         List<Object> data = ReflectionUtils.castToList(extractedData);
         if (CollectionUtils.isEmpty(data)) {
@@ -70,29 +69,14 @@ public class UserDataAspect {
 
         // If Getter is not found then ReflectionUtil will throw an error
         Map<Field, Method> annotatedFieldGetterMap = ReflectionUtils.getAnnotatedFieldMethods(dataResultClass, annotatedFields, GETTER);
-
-
         List<String> ids = StringUtils.getRealmIdsFromData(data, annotatedFieldGetterMap.values());
 
         Map<String, RealmUser> userInfoMap = authService.getUsers(ids);
-        Method userInfoSetter = dataResultClass.getMethod("setUserInfo", Map.class);
 
-        for (Object entity : data) {
-            Map<String, RealmUser> usersMap = new HashMap<>();
-            for (Field annotatedField : annotatedFields) {
-                Method idFieldGetter = annotatedFieldGetterMap.get(annotatedField);
-                String userId = (String) idFieldGetter.invoke(entity);
-                if (Objects.isNull(userId) || userId.isEmpty()) {
-                    break;
-                }
-                RealmUser userInfo = userInfoMap.get(userId)
-                        .withFieldName(annotatedField.getName());
-                usersMap.put(userId, userInfo);
-            }
-            userInfoSetter.invoke(entity, usersMap);
-        }
+        Method userInfoSetterMethod = response.getClass().getMethod("setUserInfo", Map.class);
+        userInfoSetterMethod.invoke(response, userInfoMap);
 
-        return joinPointResult;
+        return response;
     }
 
 }
