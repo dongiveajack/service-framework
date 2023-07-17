@@ -50,13 +50,16 @@ public abstract class BaseEntity implements Serializable {
     @Type(type = "org.jadira.usertype.dateandtime.joda.PersistentDateTime")
     protected DateTime deletedAt;
 
-    //@UserField
     @Column(name = "deleted_by")
     protected String deletedBy;
+
+    @Column(name = "namespace_id")
+    private String namespaceId;
 
     @PrePersist
     protected void onCreate() {
         updatedAt = createdAt = (Objects.isNull(createdAt) ? new DateTime() : createdAt);
+        namespaceId = Context.getNamespaceId();
         if (Objects.isNull(createdBy)) {
             if (Objects.nonNull(Context.getUserId())) {
                 createdBy = Context.getUserId();

@@ -56,7 +56,7 @@ public class UserDataAspect {
         List<Object> data = ReflectionUtils.castToList(extractedData);
         if (CollectionUtils.isEmpty(data)) {
             log.info("No data in response");
-            return joinPoint.proceed();
+            return response;
         }
 
         Class<?> dataResultClass = data.get(0).getClass();
@@ -64,7 +64,7 @@ public class UserDataAspect {
 
         if (CollectionUtils.isEmpty(annotatedFields)) {
             log.info("No annotated fields in the class");
-            return joinPoint.proceed();
+            return response;
         }
 
         // If Getter is not found then ReflectionUtil will throw an error

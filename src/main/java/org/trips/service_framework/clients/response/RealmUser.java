@@ -19,5 +19,4 @@ public class RealmUser {
     public String phoneNumber;
     @JsonProperty("isActive")
     public boolean isActive;
-    private String fieldName;
 }

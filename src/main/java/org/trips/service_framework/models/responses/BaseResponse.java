@@ -1,5 +1,6 @@
 package org.trips.service_framework.models.responses;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.Map;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class BaseResponse implements Serializable {
     private StatusResponse status;
     private Map<String, RealmUser> userInfo;
