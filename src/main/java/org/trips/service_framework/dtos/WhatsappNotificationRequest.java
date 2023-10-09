@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 public class WhatsappNotificationRequest extends NotificationRequest {
-
     private Data data;
 
     @lombok.Data
@@ -23,8 +22,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
     @AllArgsConstructor
     @NoArgsConstructor
     public static class Data {
-        @Builder.Default
-        private String provider = "whatsapp";
+        private String provider;
 
         private List<Contact> to;
 
@@ -39,6 +37,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
         public static MessageData getMessageData(String templateName, String languageCode, String mediaType, String mediaUrl, List<String> params) {
             return MessageData.builder().messageTemplate(MessageData.getMessageData(templateName, languageCode, mediaType, mediaUrl, params)).build();
         }
+
         @lombok.Data
         @Builder
         @NoArgsConstructor
@@ -51,7 +50,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
         @Builder
         @NoArgsConstructor
         @AllArgsConstructor
-        private static class MessageData {
+        public static class MessageData {
             private Template messageTemplate;
 
             public static Template getMessageData(String templateName, String languageCode, String mediaType, String mediaUrl, List<String> params) {
@@ -66,11 +65,10 @@ public class WhatsappNotificationRequest extends NotificationRequest {
             @Builder
             @NoArgsConstructor
             @AllArgsConstructor
-            private static class Template {
+            public static class Template {
                 private String templateName;
 
-                @Builder.Default
-                private Language language = Language.builder().build();
+                private Language language;
 
                 private TemplateData richTemplateData;
 
@@ -89,7 +87,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
                 @Builder
                 @NoArgsConstructor
                 @AllArgsConstructor
-                private static class TemplateData {
+                public static class TemplateData {
                     private TemplateHeader header;
 
                     private TemplateBody body;
@@ -116,7 +114,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
                     @Builder
                     @NoArgsConstructor
                     @AllArgsConstructor
-                    private static class TemplateBody {
+                    public static class TemplateBody {
                         private List<Param> params;
 
                         public static List<Param> getParams(List<String> params) {
@@ -141,9 +139,8 @@ public class WhatsappNotificationRequest extends NotificationRequest {
             @Builder
             @NoArgsConstructor
             @AllArgsConstructor
-            private static class Language {
-                @Builder.Default
-                private String code = "en";
+            public static class Language {
+                private String code;
             }
         }
     }

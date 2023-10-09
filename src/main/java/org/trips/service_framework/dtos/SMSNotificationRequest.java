@@ -14,7 +14,6 @@ import org.trips.service_framework.clients.request.NotificationRequest;
 @AllArgsConstructor
 @EqualsAndHashCode(callSuper = false)
 public class SMSNotificationRequest extends NotificationRequest {
-
     private Data data;
 
     @lombok.Data

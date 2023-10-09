@@ -15,7 +15,6 @@ import java.util.List;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper=false)
 public class EmailNotificationRequest extends NotificationRequest {
-
     private Data data;
 
     @lombok.Data
@@ -40,8 +39,7 @@ public class EmailNotificationRequest extends NotificationRequest {
         @JsonProperty("bccAddresses")
         private List<String> bccAddresses;
 
-        @Builder.Default
-        private String charset = "UTF-8";
+        private String charset;
     }
 
 }
