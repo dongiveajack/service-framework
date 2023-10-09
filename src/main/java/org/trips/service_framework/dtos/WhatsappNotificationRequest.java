@@ -7,8 +7,13 @@ import lombok.NoArgsConstructor;
 import org.trips.service_framework.clients.request.NotificationRequest;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+
+/**
+ * contains the data required for the sending a whatsapp notification.
+ */
 @lombok.Data
 @Builder
 @AllArgsConstructor
@@ -29,6 +34,9 @@ public class WhatsappNotificationRequest extends NotificationRequest {
         private MessageData data;
 
         public static List<Contact> getContacts(List<String> phoneNumbers) {
+            if (Objects.isNull(phoneNumbers)) {
+                return null;
+            }
             return phoneNumbers.stream()
                     .map(pNo -> Contact.builder().phoneNumber(pNo).build())
                     .collect(Collectors.toList());
@@ -93,6 +101,9 @@ public class WhatsappNotificationRequest extends NotificationRequest {
                     private TemplateBody body;
 
                     public static TemplateHeader getTemplateHeader(String type, String mediaUrl) {
+                        if (Objects.isNull(type)) {
+                            return null;
+                        }
                         return TemplateHeader.builder().type(type).mediaUrl(mediaUrl).build();
                     }
 
@@ -118,6 +129,9 @@ public class WhatsappNotificationRequest extends NotificationRequest {
                         private List<Param> params;
 
                         public static List<Param> getParams(List<String> params) {
+                            if (Objects.isNull(params)) {
+                                return null;
+                            }
                             return params.stream()
                                     .map(p -> Param.builder().data(p).build())
                                     .collect(Collectors.toList());

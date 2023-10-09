@@ -6,8 +6,9 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.trips.service_framework.clients.request.NotificationRequest;
 
-
-
+/**
+ * contains the data required for the sending a sms notification.
+ */
 @lombok.Data
 @Builder
 @NoArgsConstructor

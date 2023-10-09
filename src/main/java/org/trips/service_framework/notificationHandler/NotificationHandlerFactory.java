@@ -11,6 +11,11 @@ public class NotificationHandlerFactory {
     private final EmailNotificationHandler emailNotificationHandler;
     private final WhatsappNotificationHandler whatsappNotificationHandler;
 
+    /**
+     * returns the required notification handler based on the type provided.
+     * @param type type of notification required
+     * @return required notification handler
+     */
     public NotificationHandler getNotificationHandler(NotificationType type) {
         switch (type) {
             case SMS:

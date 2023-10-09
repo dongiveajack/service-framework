@@ -1,14 +1,18 @@
 package org.trips.service_framework.notificationHandler.dtos;
 
-import lombok.*;
-import org.springframework.validation.annotation.Validated;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+/**
+ * dto used for giving sms notification data to service
+ */
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Validated
 public class SMSDto {
     private String notificationSubject;
 

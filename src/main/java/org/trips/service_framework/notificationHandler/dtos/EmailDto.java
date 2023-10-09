@@ -7,6 +7,9 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
+/**
+ * dto used for giving email notification data to service
+ */
 @Data
 @Builder
 @AllArgsConstructor

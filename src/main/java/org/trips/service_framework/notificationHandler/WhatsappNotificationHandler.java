@@ -1,13 +1,16 @@
 package org.trips.service_framework.notificationHandler;
 
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 import org.trips.service_framework.clients.MercuryClient;
 import org.trips.service_framework.clients.request.NotificationRequest;
 import org.trips.service_framework.clients.response.NotificationResponse;
-import org.trips.service_framework.dtos.WhatsappData;
-import org.trips.service_framework.utils.Context;
+import org.trips.service_framework.dtos.WhatsappNotificationRequest;
+
+import java.util.Objects;
 
 @Slf4j
 @Service
@@ -15,17 +18,64 @@ import org.trips.service_framework.utils.Context;
 public class WhatsappNotificationHandler implements NotificationHandler {
     private final MercuryClient mercuryClient;
 
+    /**
+     * calls the mercury service along with the request data.
+     * returns error status if any exception.
+     * @param notificationRequest data required for the whatsapp notification
+     * @return notification response from mercury service
+     * @param <T> base class for the notification request
+     */
     @Override
-    public <T> NotificationResponse send(String subject, String clientCode, T data) {
-        NotificationRequest<WhatsappData> request = NotificationRequest.<WhatsappData>builder()
-                .user(Context.getUserId())
-                .clientCode(clientCode)
-                .subject(subject)
-                .data((WhatsappData) data)
-                .build();
-        NotificationResponse response = mercuryClient.sendWhatsappMessage(request);
-        log.info("Whatsapp status: {}", response);
+    public <T extends NotificationRequest> NotificationResponse send(@NonNull T notificationRequest) {
+        WhatsappNotificationRequest request = (WhatsappNotificationRequest) notificationRequest;
 
-        return response;
+
+        try {
+            validateRequest(request);
+            log.info("Sending Email using clientCode {} with subject {} and Data {} by user {}", request.getClientCode(), request.getSubject(), request.getData(), request.getUser());
+
+            return mercuryClient.sendWhatsappMessage(request);
+        } catch (Exception e) {
+            return NotificationResponse.getErrorStatus(e.getMessage());
+        }
+    }
+
+    /**
+     * checks if the values required for the whatsapp notification is present.
+     * @param request data required for the whatsapp notification
+     */
+
+    private void validateRequest(WhatsappNotificationRequest request) {
+        String name = Strings.WHATSAPP_NOTIFICATION_REQUEST;
+        if (Objects.isNull(request.getData())) {
+            throw new IllegalArgumentException(String.format("%s: data is null", name));
+        }
+        if (ObjectUtils.isEmpty(request.getClientCode())) {
+            throw new IllegalArgumentException(String.format("%s: clientCode is empty", name));
+        }
+        if (Objects.isNull(request.getSubject())) {
+            throw new IllegalArgumentException(String.format("%s: notification subject is null", name));
+        }
+        if (Objects.isNull(request.getData())) {
+            throw new IllegalArgumentException(String.format("%s: data is null", name));
+        }
+        if (ObjectUtils.isEmpty(request.getData().getTo())) {
+            throw new IllegalArgumentException(String.format("%s: phone numbers is empty", name));
+        }
+        if (ObjectUtils.isEmpty(request.getData().getProvider())) {
+            throw new IllegalArgumentException(String.format("%s: provider is empty", name));
+        }
+        if (Objects.isNull(request.getData().getData().getMessageTemplate())) {
+            throw new IllegalArgumentException(String.format("%s: message template is null", name));
+        }
+        if (ObjectUtils.isEmpty(request.getData().getData().getMessageTemplate().getTemplateName())) {
+            throw new IllegalArgumentException(String.format("%s: template name is empty", name));
+        }
+        if (Objects.isNull(request.getData().getData().getMessageTemplate().getLanguage())) {
+            throw new IllegalArgumentException(String.format("%s: language is null", name));
+        }
+        if (ObjectUtils.isEmpty(request.getData().getData().getMessageTemplate().getLanguage().getCode())) {
+            throw new IllegalArgumentException(String.format("%s: language code is empty", name));
+        }
     }
 }

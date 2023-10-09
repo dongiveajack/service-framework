@@ -9,6 +9,10 @@ import org.trips.service_framework.clients.request.NotificationRequest;
 
 import java.util.List;
 
+/**
+ * contains the data required for the sending an email notification.
+ */
+
 @lombok.Data
 @Builder
 @AllArgsConstructor

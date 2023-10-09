@@ -5,6 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * provides base request format from which all the notificationType requests are inherited.
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
