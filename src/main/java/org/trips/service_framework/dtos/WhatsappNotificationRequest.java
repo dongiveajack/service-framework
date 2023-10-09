@@ -43,7 +43,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
         }
 
         public static MessageData getMessageData(String templateName, String languageCode, String mediaType, String mediaUrl, List<String> params) {
-            return MessageData.builder().messageTemplate(MessageData.getMessageData(templateName, languageCode, mediaType, mediaUrl, params)).build();
+            return MessageData.builder().messageTemplate(MessageData.getTemplate(templateName, languageCode, mediaType, mediaUrl, params)).build();
         }
 
         @lombok.Data
@@ -61,7 +61,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
         public static class MessageData {
             private Template messageTemplate;
 
-            public static Template getMessageData(String templateName, String languageCode, String mediaType, String mediaUrl, List<String> params) {
+            public static Template getTemplate(String templateName, String languageCode, String mediaType, String mediaUrl, List<String> params) {
                 return Template.builder()
                         .templateName(templateName)
                         .language(Template.getLanguage(languageCode))

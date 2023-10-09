@@ -37,6 +37,8 @@ public class WhatsappNotificationHandler implements NotificationHandler {
 
             return mercuryClient.sendWhatsappMessage(request);
         } catch (Exception e) {
+            log.info("Error sending whatsapp notification: \n{}", e.getMessage());
+
             return NotificationResponse.getErrorStatus(e.getMessage());
         }
     }
@@ -48,36 +50,35 @@ public class WhatsappNotificationHandler implements NotificationHandler {
      */
 
     private void validateRequest(WhatsappNotificationRequest request) {
-        String name = Strings.WHATSAPP_NOTIFICATION_REQUEST;
         if (Objects.isNull(request.getData())) {
-            throw new IllegalArgumentException(String.format("%s: data is null", name));
+            throw new IllegalArgumentException(String.format("%s: data is null", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getClientCode())) {
-            throw new IllegalArgumentException(String.format("%s: clientCode is empty", name));
+            throw new IllegalArgumentException(String.format("%s: clientCode is empty", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getSubject())) {
-            throw new IllegalArgumentException(String.format("%s: notification subject is null", name));
+            throw new IllegalArgumentException(String.format("%s: notification subject is null", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
-        if (Objects.isNull(request.getData())) {
-            throw new IllegalArgumentException(String.format("%s: data is null", name));
+        if (Objects.isNull(request.getData().getData())) {
+            throw new IllegalArgumentException(String.format("%s: message data is null", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getData().getTo())) {
-            throw new IllegalArgumentException(String.format("%s: phone numbers is empty", name));
+            throw new IllegalArgumentException(String.format("%s: phone numbers is empty", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getData().getProvider())) {
-            throw new IllegalArgumentException(String.format("%s: provider is empty", name));
+            throw new IllegalArgumentException(String.format("%s: provider is empty", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData().getData().getMessageTemplate())) {
-            throw new IllegalArgumentException(String.format("%s: message template is null", name));
+            throw new IllegalArgumentException(String.format("%s: message template is null", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getData().getData().getMessageTemplate().getTemplateName())) {
-            throw new IllegalArgumentException(String.format("%s: template name is empty", name));
+            throw new IllegalArgumentException(String.format("%s: template name is empty", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData().getData().getMessageTemplate().getLanguage())) {
-            throw new IllegalArgumentException(String.format("%s: language is null", name));
+            throw new IllegalArgumentException(String.format("%s: language is null", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getData().getData().getMessageTemplate().getLanguage().getCode())) {
-            throw new IllegalArgumentException(String.format("%s: language code is empty", name));
+            throw new IllegalArgumentException(String.format("%s: language code is empty", Strings.WHATSAPP_NOTIFICATION_REQUEST));
         }
     }
 }
