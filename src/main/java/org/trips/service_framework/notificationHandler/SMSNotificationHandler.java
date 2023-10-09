@@ -21,9 +21,10 @@ public class SMSNotificationHandler implements NotificationHandler {
     /**
      * calls the mercury service along with the request data.
      * returns error status if any exception.
+     *
      * @param notificationRequest data required for the sms notification
+     * @param <T>                 base class for the notification request
      * @return notification response from mercury service
-     * @param <T> base class for the notification request
      */
     @Override
     public <T extends NotificationRequest> NotificationResponse send(@NonNull T notificationRequest) {
@@ -40,6 +41,7 @@ public class SMSNotificationHandler implements NotificationHandler {
 
     /**
      * checks if the values required for the sms notification is present.
+     *
      * @param request data required for the sms notification
      */
     private void validateRequest(SMSNotificationRequest request) {

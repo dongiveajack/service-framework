@@ -21,9 +21,10 @@ public class EmailNotificationHandler implements NotificationHandler {
     /**
      * calls the mercury service along with the request data.
      * returns error status if any exception.
+     *
      * @param notificationRequest data required for the email notification
+     * @param <T>                 base class for the notification request
      * @return notification response from mercury service
-     * @param <T> base class for the notification request
      */
     @Override
     public <T extends NotificationRequest> NotificationResponse send(@NonNull T notificationRequest) {
@@ -41,6 +42,7 @@ public class EmailNotificationHandler implements NotificationHandler {
 
     /**
      * checks if the values required for the email notification is present.
+     *
      * @param request data required for the email notification
      */
 

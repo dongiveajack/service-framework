@@ -5,5 +5,5 @@ import org.trips.service_framework.clients.request.NotificationRequest;
 import org.trips.service_framework.clients.response.NotificationResponse;
 
 public interface NotificationHandler {
-    <T extends NotificationRequest> NotificationResponse send( @NonNull T notificationRequest);
+    <T extends NotificationRequest> NotificationResponse send(@NonNull T notificationRequest);
 }

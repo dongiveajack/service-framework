@@ -13,6 +13,7 @@ public class NotificationHandlerFactory {
 
     /**
      * returns the required notification handler based on the type provided.
+     *
      * @param type type of notification required
      * @return required notification handler
      */

@@ -17,7 +17,7 @@ import java.util.List;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class EmailNotificationRequest extends NotificationRequest {
     private Data data;
 
@@ -25,7 +25,7 @@ public class EmailNotificationRequest extends NotificationRequest {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class Data{
+    public static class Data {
         private String sender;
 
         @JsonProperty("toAddresses")

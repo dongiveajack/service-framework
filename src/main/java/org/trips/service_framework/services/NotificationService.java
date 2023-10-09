@@ -23,8 +23,9 @@ public class NotificationService {
     /**
      * convert the dto given to sms notification request.
      * send the request to sms notification handler.
+     *
      * @param clientCode client code for the notification
-     * @param smsDto dto containing the values for notification request
+     * @param smsDto     dto containing the values for notification request
      * @return notification response from handler
      */
     public NotificationResponse sendSMSNotification(String clientCode, SMSDto smsDto) {
@@ -47,8 +48,9 @@ public class NotificationService {
     /**
      * convert the dto given to email notification request.
      * send the request to email notification handler.
+     *
      * @param clientCode client code for the notification
-     * @param emailDto dto containing the values for notification request
+     * @param emailDto   dto containing the values for notification request
      * @return notification response from handler
      */
 
@@ -77,7 +79,8 @@ public class NotificationService {
     /**
      * convert the dto given to whatsapp notification request.
      * send the request to whatsapp notification handler
-     * @param clientCode client code for the notification
+     *
+     * @param clientCode  client code for the notification
      * @param whatsappDto dto containing the values for notification request
      * @return notification response from handler
      */

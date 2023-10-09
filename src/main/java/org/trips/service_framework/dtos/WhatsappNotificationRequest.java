@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@EqualsAndHashCode(callSuper=false)
+@EqualsAndHashCode(callSuper = false)
 public class WhatsappNotificationRequest extends NotificationRequest {
     private Data data;
 
@@ -115,7 +115,7 @@ public class WhatsappNotificationRequest extends NotificationRequest {
                     @Builder
                     @NoArgsConstructor
                     @AllArgsConstructor
-                    private static class  TemplateHeader {
+                    private static class TemplateHeader {
                         private String type;
 
                         private String mediaUrl;
