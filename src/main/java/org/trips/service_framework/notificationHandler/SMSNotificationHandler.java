@@ -35,6 +35,8 @@ public class SMSNotificationHandler implements NotificationHandler {
 
             return mercuryClient.sendSMS(request);
         } catch (Exception e) {
+            log.error("Error sending sms notification: {}", e.getMessage());
+
             return NotificationResponse.getErrorStatus(e.getLocalizedMessage());
         }
     }
@@ -45,24 +47,23 @@ public class SMSNotificationHandler implements NotificationHandler {
      * @param request data required for the sms notification
      */
     private void validateRequest(SMSNotificationRequest request) {
-        String name = Strings.SMS_NOTIFICATION_REQUEST;
         if (Objects.isNull(request.getData())) {
-            throw new IllegalArgumentException(String.format("%s: data is null", name));
+            throw new IllegalArgumentException(String.format("%s: data is null", Strings.SMS_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getClientCode())) {
-            throw new IllegalArgumentException(String.format("%s: clientCode is null or empty", name));
+            throw new IllegalArgumentException(String.format("%s: clientCode is null or empty", Strings.SMS_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getSubject())) {
-            throw new IllegalArgumentException(String.format("%s: subject is null", name));
+            throw new IllegalArgumentException(String.format("%s: subject is null", Strings.SMS_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData().getMessage())) {
-            throw new IllegalArgumentException(String.format("%s: message is null", name));
+            throw new IllegalArgumentException(String.format("%s: message is null", Strings.SMS_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData().getTo()) || request.getData().getTo().isBlank()) {
-            throw new IllegalArgumentException(String.format("%s: to is null or empty", name));
+            throw new IllegalArgumentException(String.format("%s: to is null or empty", Strings.SMS_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData().getType())) {
-            throw new IllegalArgumentException(String.format("%s: type is null", name));
+            throw new IllegalArgumentException(String.format("%s: type is null", Strings.SMS_NOTIFICATION_REQUEST));
         }
     }
 }

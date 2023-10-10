@@ -36,6 +36,8 @@ public class EmailNotificationHandler implements NotificationHandler {
 
             return mercuryClient.sendEmail(request);
         } catch (Exception e) {
+            log.error("Error sending email notification: {}", e.getMessage());
+
             return NotificationResponse.getErrorStatus(e.getMessage());
         }
     }
@@ -47,27 +49,26 @@ public class EmailNotificationHandler implements NotificationHandler {
      */
 
     private void validateRequest(EmailNotificationRequest request) {
-        String name = Strings.EMAIL_NOTIFICATION_REQUEST;
         if (Objects.isNull(request.getData())) {
-            throw new IllegalArgumentException(String.format("%s: data is null", name));
+            throw new IllegalArgumentException(String.format("%s: data is null", Strings.EMAIL_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getClientCode())) {
-            throw new IllegalArgumentException(String.format("%s: clientCode is empty", name));
+            throw new IllegalArgumentException(String.format("%s: clientCode is empty", Strings.EMAIL_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getSubject())) {
-            throw new IllegalArgumentException(String.format("%s: notification subject is null", name));
+            throw new IllegalArgumentException(String.format("%s: notification subject is null", Strings.EMAIL_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData())) {
-            throw new IllegalArgumentException(String.format("%s: data is null", name));
+            throw new IllegalArgumentException(String.format("%s: data is null", Strings.EMAIL_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData().getSender()) || request.getData().getSender().isBlank()) {
-            throw new IllegalArgumentException(String.format("%s: sender is null or blank", name));
+            throw new IllegalArgumentException(String.format("%s: sender is null or blank", Strings.EMAIL_NOTIFICATION_REQUEST));
         }
         if (Objects.isNull(request.getData().getCharset())) {
-            throw new IllegalArgumentException(String.format("%s: charset is null", name));
+            throw new IllegalArgumentException(String.format("%s: charset is null", Strings.EMAIL_NOTIFICATION_REQUEST));
         }
         if (ObjectUtils.isEmpty(request.getData().getToAddresses())) {
-            throw new IllegalArgumentException(String.format("%s: to addresses is empty", name));
+            throw new IllegalArgumentException(String.format("%s: to addresses is empty", Strings.EMAIL_NOTIFICATION_REQUEST));
         }
     }
 }
