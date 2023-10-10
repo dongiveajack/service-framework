@@ -35,7 +35,7 @@ public class SMSNotificationHandler implements NotificationHandler {
 
             return mercuryClient.sendSMS(request);
         } catch (Exception e) {
-            log.info("Error sending sms notification: \n{}", e.getMessage());
+            log.error("Error sending sms notification: {}", e.getMessage());
 
             return NotificationResponse.getErrorStatus(e.getLocalizedMessage());
         }

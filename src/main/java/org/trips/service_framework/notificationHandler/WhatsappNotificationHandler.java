@@ -37,7 +37,7 @@ public class WhatsappNotificationHandler implements NotificationHandler {
 
             return mercuryClient.sendWhatsappMessage(request);
         } catch (Exception e) {
-            log.info("Error sending whatsapp notification: \n{}", e.getMessage());
+            log.error("Error sending whatsapp notification: {}", e.getMessage());
 
             return NotificationResponse.getErrorStatus(e.getMessage());
         }

@@ -36,7 +36,7 @@ public class EmailNotificationHandler implements NotificationHandler {
 
             return mercuryClient.sendEmail(request);
         } catch (Exception e) {
-            log.info("Error sending email notification: \n{}", e.getMessage());
+            log.error("Error sending email notification: {}", e.getMessage());
 
             return NotificationResponse.getErrorStatus(e.getMessage());
         }
