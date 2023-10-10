@@ -1,6 +1,7 @@
 package org.trips.service_framework.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.trips.service_framework.clients.response.NotificationResponse;
 import org.trips.service_framework.dtos.EmailNotificationRequest;
@@ -19,16 +20,17 @@ import org.trips.service_framework.utils.Context;
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationHandlerFactory notificationHandlerFactory;
+    @Value("${service.client-id}")
+    private String clientCode;
 
     /**
      * convert the dto given to sms notification request.
      * send the request to sms notification handler.
      *
-     * @param clientCode client code for the notification
      * @param smsDto     dto containing the values for notification request
      * @return notification response from handler
      */
-    public NotificationResponse sendSMSNotification(String clientCode, SMSDto smsDto) {
+    public NotificationResponse sendSMSNotification(SMSDto smsDto) {
         SMSNotificationRequest request = SMSNotificationRequest.builder()
                 .data(SMSNotificationRequest.Data.builder()
                         .to(smsDto.getTo())
@@ -49,12 +51,11 @@ public class NotificationService {
      * convert the dto given to email notification request.
      * send the request to email notification handler.
      *
-     * @param clientCode client code for the notification
      * @param emailDto   dto containing the values for notification request
      * @return notification response from handler
      */
 
-    public NotificationResponse sendEmailNotification(String clientCode, EmailDto emailDto) {
+    public NotificationResponse sendEmailNotification(EmailDto emailDto) {
         EmailNotificationRequest request = EmailNotificationRequest.builder()
                 .data(EmailNotificationRequest.Data.builder()
                         .sender(emailDto.getSender())
@@ -80,12 +81,11 @@ public class NotificationService {
      * convert the dto given to whatsapp notification request.
      * send the request to whatsapp notification handler
      *
-     * @param clientCode  client code for the notification
      * @param whatsappDto dto containing the values for notification request
      * @return notification response from handler
      */
 
-    public NotificationResponse sendWhatsappNotification(String clientCode, WhatsappDto whatsappDto) {
+    public NotificationResponse sendWhatsappNotification(WhatsappDto whatsappDto) {
         WhatsappNotificationRequest request = WhatsappNotificationRequest.builder()
                 .data(WhatsappNotificationRequest.Data.builder()
                         .provider(whatsappDto.getProvider())
