@@ -33,7 +33,7 @@ public class WhatsappNotificationHandler implements NotificationHandler {
 
         try {
             validateRequest(request);
-            log.info("Sending Email using clientCode {} with subject {} and Data {} by user {}", request.getClientCode(), request.getSubject(), request.getData(), request.getUser());
+            log.info("Sending Whatsapp using clientCode {} with subject {} and Data {} by user {}", request.getClientCode(), request.getSubject(), request.getData(), request.getUser());
 
             return mercuryClient.sendWhatsappMessage(request);
         } catch (Exception e) {
