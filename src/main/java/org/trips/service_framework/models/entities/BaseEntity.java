@@ -1,5 +1,8 @@
 package org.trips.service_framework.models.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 import org.trips.service_framework.aop.UserField;
 import org.trips.service_framework.utils.Context;
 import lombok.Data;
@@ -15,6 +18,9 @@ import java.util.Objects;
  * Created By Abhinav Tripathi
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
     @Id
@@ -54,7 +60,7 @@ public abstract class BaseEntity implements Serializable {
     protected String deletedBy;
 
     @Column(name = "namespace_id")
-    private String namespaceId;
+    protected String namespaceId;
 
     @PrePersist
     protected void onCreate() {
