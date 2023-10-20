@@ -2,6 +2,7 @@ package org.trips.service_framework.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 import org.trips.service_framework.clients.response.NotificationResponse;
 import org.trips.service_framework.dtos.EmailNotificationRequest;
@@ -15,8 +16,8 @@ import org.trips.service_framework.notificationHandler.dtos.SMSDto;
 import org.trips.service_framework.notificationHandler.dtos.WhatsappDto;
 import org.trips.service_framework.utils.Context;
 
-
 @Component
+@ConditionalOnProperty({"service.client-id", "mercury.base-url"})
 @RequiredArgsConstructor
 public class NotificationService {
     private final NotificationHandlerFactory notificationHandlerFactory;

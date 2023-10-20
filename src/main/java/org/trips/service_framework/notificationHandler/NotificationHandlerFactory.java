@@ -1,10 +1,12 @@
 package org.trips.service_framework.notificationHandler;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Component;
 
 
 @Component
+@ConditionalOnProperty(prefix = "mercury", name = "base-url")
 @RequiredArgsConstructor
 public class NotificationHandlerFactory {
     private final SMSNotificationHandler smsNotificationHandler;

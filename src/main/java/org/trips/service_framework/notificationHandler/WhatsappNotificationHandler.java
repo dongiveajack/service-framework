@@ -3,6 +3,7 @@ package org.trips.service_framework.notificationHandler;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.trips.service_framework.clients.MercuryClient;
@@ -14,6 +15,7 @@ import java.util.Objects;
 
 @Slf4j
 @Service
+@ConditionalOnProperty(prefix = "mercury", name = "base-url")
 @RequiredArgsConstructor
 public class WhatsappNotificationHandler implements NotificationHandler {
     private final MercuryClient mercuryClient;
@@ -33,7 +35,7 @@ public class WhatsappNotificationHandler implements NotificationHandler {
 
         try {
             validateRequest(request);
-            log.info("Sending Email using clientCode {} with subject {} and Data {} by user {}", request.getClientCode(), request.getSubject(), request.getData(), request.getUser());
+            log.info("Sending whatsapp message using clientCode {} with subject {} and Data {} by user {}", request.getClientCode(), request.getSubject(), request.getData(), request.getUser());
 
             return mercuryClient.sendWhatsappMessage(request);
         } catch (Exception e) {
