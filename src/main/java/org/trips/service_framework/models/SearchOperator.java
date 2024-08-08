@@ -1,8 +1,21 @@
 package org.trips.service_framework.models;
 
+import lombok.RequiredArgsConstructor;
+import org.trips.service_framework.utils.search.operators.BinaryOperator;
+import org.trips.service_framework.utils.search.operators.UnaryOperator;
+
 /**
- * Created By Abhinav Tripathi
+ * Enum representing operations in the search API
+ *
+ * <p>This enum has to update and be in-sync with {@link BinaryOperator}
+ * and {@link UnaryOperator}
+ * in order for the search utility to offer all the functionalities of the search API. </p>
+ *
+ * @see org.trips.service_framework.utils.search.QueryBuilder
+ *
+ * @author Abhinav Tripathi
  */
+@RequiredArgsConstructor
 public enum SearchOperator {
     EQUAL_TO("eq"),
     NOT_EQUAL_TO("ne"),
@@ -20,11 +33,7 @@ public enum SearchOperator {
     JSONB_PATH_EQUALS("jsonb_path_equals"),
     JSONB_PATH_CONTAINS("jsonb_path_contains");
 
-    public String name;
-
-    SearchOperator(String msg) {
-        this.name = msg;
-    }
+    public final String name;
 
     public static SearchOperator value(String operator) {
         for (SearchOperator searchOperator : SearchOperator.values()) {
