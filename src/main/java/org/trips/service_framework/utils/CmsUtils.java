@@ -3,6 +3,7 @@ package org.trips.service_framework.utils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 import org.trips.service_framework.constants.CmsConstants;
+import org.trips.service_framework.dtos.SkuAttributes;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -42,6 +43,25 @@ public class CmsUtils {
         treatment = treatment.replace("[", "").replace("]", "");
         treatment = treatment.replaceAll("\"", "");
         return treatment.trim();
+    }
+
+    public static SkuAttributes validateQuantityAttributes(SkuAttributes skuAttributes) {
+        String unitPerCarton = skuAttributes.getUnitPerCarton();
+        String quantityPerUnit = skuAttributes.getQuantityPerUnit();
+        String unitWeight = skuAttributes.getUnitWeight();
+
+        skuAttributes.setUnitPerCarton(CmsConstants.NOT_APPLICABLE);
+        skuAttributes.setQuantityPerUnit(CmsConstants.NOT_APPLICABLE);
+        skuAttributes.setUnitWeight(CmsConstants.NOT_APPLICABLE);
+
+        if (nonNull(unitPerCarton) && nonNull(quantityPerUnit)) {
+            skuAttributes.setUnitPerCarton(unitPerCarton);
+            skuAttributes.setQuantityPerUnit(quantityPerUnit);
+        } else if (nonNull(unitWeight)) {
+            skuAttributes.setUnitWeight(unitWeight);
+        }
+
+        return skuAttributes;
     }
 
     public static boolean isNull(String str) {

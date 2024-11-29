@@ -35,13 +35,6 @@ public class SkuAttributes {
     private String grade;
     private String certification;
 
-    @AssertTrue(message = "Quantity information format is not correct")
-    public boolean isOk() {
-        return (CmsUtils.nonNull(unitPerCarton) && CmsUtils.nonNull(quantityPerUnit) && CmsUtils.isNull(unitWeight)) ||
-                (CmsUtils.isNull(unitPerCarton) && CmsUtils.isNull(quantityPerUnit) && CmsUtils.nonNull(unitWeight)) ||
-                (CmsUtils.isNull(unitPerCarton) && CmsUtils.isNull(quantityPerUnit) && CmsUtils.isNull(unitWeight));
-    }
-
     public static Map<String, Function<SkuAttributes, Object>> attributeGetters() {
         Map<String, Function<SkuAttributes, Object>> attributeGetters = new HashMap<>() {{
             put("spec", SkuAttributes::getSpec);

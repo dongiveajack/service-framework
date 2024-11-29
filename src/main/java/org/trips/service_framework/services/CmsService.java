@@ -23,6 +23,7 @@ import org.trips.service_framework.exceptions.CmsException;
 import org.trips.service_framework.exceptions.NotAllowedException;
 import org.trips.service_framework.exceptions.NotFoundException;
 import org.trips.service_framework.helpers.CmsHelper;
+import org.trips.service_framework.utils.CmsUtils;
 import org.trips.service_framework.utils.GraphQLUtils;
 import org.trips.service_framework.utils.ValidationUtils;
 import reactor.netty.http.client.HttpClient;
@@ -136,15 +137,14 @@ public class CmsService {
         }
 
         if (response.getData().searchSkus.size() > 1) {
-            log.error("Multiple SKUs found for the given sku attributes");
-            throw new CmsException("Multiple SKUs found for the given sku attributes");
+            log.error("Multiple SKUs found for the given sku attributes, returning the first SKU");
         }
 
         return response.getData().searchSkus.get(0);
     }
 
     public Sku createSku(SkuAttributes skuAttributes) {
-        ValidationUtils.validate(skuAttributes);
+        ValidationUtils.validate(CmsUtils.validateQuantityAttributes(skuAttributes));
         Map<String, Object> requestParams = cmsHelper.getSearchQueryFromAttributes(skuAttributes);
         List<Map<String, String>> attributes = (List) ((Map) requestParams.get("searchQuery")).get("filters");
         Map<String, String> skuAttributesMap = attributes.stream()
