@@ -16,7 +16,7 @@ ext {
 }
 
 group "com.github.ironman19933"
-version "3.4.7"
+version "3.4.8"
 
 sourceCompatibility = '11'
 
