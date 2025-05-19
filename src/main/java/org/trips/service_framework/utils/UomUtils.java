@@ -5,6 +5,7 @@ import org.trips.service_framework.enums.UnitOfMeasurement;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -22,11 +23,19 @@ public class UomUtils {
     }
 
     public static BigDecimal convertQuantity(UnitOfMeasurement inputUom, UnitOfMeasurement outputUom, BigDecimal quantity) {
-        if (Objects.isNull(inputUom) || Objects.isNull(outputUom)) {
-            log.warn("Received one of the UOM as null. Returning same quantity. Input UOM: {}, OutputUom: {}", inputUom, outputUom);
+        if (Objects.isNull(inputUom) || Objects.isNull(outputUom) || Objects.isNull(quantity)) {
+            log.warn("Received null values for UOMs or quantity. Input UOM: {}, Output UOM: {}, Quantity: {}", inputUom, outputUom, quantity);
 
             return quantity;
         }
+
+        List<UnitOfMeasurement> allowedUOMs = List.of(UnitOfMeasurement.kg, UnitOfMeasurement.lb);
+        if (!allowedUOMs.contains(inputUom) || !allowedUOMs.contains(outputUom)) {
+            log.warn("Received UOMs are not allowed for conversion. Input UOM: {}, Output UOM: {}", inputUom, outputUom);
+
+            return quantity;
+        }
+
         if (outputUom.equals(inputUom)) {
             return quantity;
         }
