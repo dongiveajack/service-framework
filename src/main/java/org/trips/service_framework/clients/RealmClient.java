@@ -23,9 +23,6 @@ import org.trips.service_framework.exceptions.handlers.feignClientExceptionHandl
 @FeignClientAdvice(RealmExceptionHandler.class)
 @FeignClient(name = "realm", url = "${realm.base-url}")
 public interface RealmClient {
-    @RequestMapping(method = RequestMethod.POST, value = "/sessioninfo/authorize")
-    RealmSessionInfoResponse getSessionInfo(@RequestHeader("Cookie") String cookie, @RequestBody RealmAuthenticateRequest request);
-
     @RequestMapping(method = RequestMethod.GET, value = "/sessioninfo")
     RealmSessionInfoResponse getSessionInfo(@RequestHeader("Cookie") String cookie);
 
