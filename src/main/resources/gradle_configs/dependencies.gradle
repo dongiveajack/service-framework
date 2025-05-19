@@ -1,0 +1,16 @@
+ext {
+    commonDependencies = [
+            awsStarter  : 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE',
+            awsMessaging: 'org.springframework.cloud:spring-cloud-aws-messaging:2.2.6.RELEASE',
+            postgres    : 'org.postgresql:postgresql'
+    ]
+
+    annotationProcessors = [
+            lombok           : 'org.projectlombok:lombok:1.18.26',
+            mapstruct        : 'org.mapstruct:mapstruct-processor:1.5.3.Final',
+            // platform("org.springframework.boot:spring-boot-dependencies:2.7.1"),
+            persistenceApi   : "javax.persistence:javax.persistence-api",
+            javaAnnotationApi: "javax.annotation:javax.annotation-api",
+            queryDsl         : "com.querydsl:querydsl-apt:5.0.0:jpa"
+    ]
+}

@@ -1,5 +1,9 @@
 package org.trips.service_framework.models.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
+import org.trips.service_framework.aop.UserField;
 import org.trips.service_framework.utils.Context;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
@@ -14,6 +18,9 @@ import java.util.Objects;
  * Created By Abhinav Tripathi
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
+@SuperBuilder
 @MappedSuperclass
 public abstract class BaseEntity implements Serializable {
     @Id
@@ -22,9 +29,11 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "id", updatable = false)
     protected Long id;
 
+    @UserField
     @Column(name = "created_by", nullable = false, updatable = false)
     protected String createdBy;
 
+    @UserField
     @Column(name = "updated_by", nullable = false)
     protected String updatedBy;
 
@@ -50,9 +59,13 @@ public abstract class BaseEntity implements Serializable {
     @Column(name = "deleted_by")
     protected String deletedBy;
 
+    @Column(name = "namespace_id")
+    protected String namespaceId;
+
     @PrePersist
     protected void onCreate() {
         updatedAt = createdAt = (Objects.isNull(createdAt) ? new DateTime() : createdAt);
+        namespaceId = Context.getNamespaceId();
         if (Objects.isNull(createdBy)) {
             if (Objects.nonNull(Context.getUserId())) {
                 createdBy = Context.getUserId();

@@ -1,0 +1,21 @@
+query SearchSkus($searchQuery: SearchQuery!) {
+    searchSkus(searchQuery: $searchQuery) {
+        id
+        name
+        code
+        productType {
+            id
+            name
+        }
+        isActive
+        attributes {
+            ... on AttributeWithScalarValue {
+                value
+                attribute {
+                    id
+                    name
+                }
+            }
+        }
+    }
+}

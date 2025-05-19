@@ -6,10 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * @author Abhinav Tripathi 16/05/21
- */
-@Target(ElementType.METHOD)
+ * @author : hardikphalet
+ * @mailto : hardik.phalet@captainfresh.in (@gmail.com)
+ * @created : 15/06/23, Thursday
+ **/
+
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Authenticate {
-    boolean authorize() default false;
+@Target({ElementType.FIELD})
+public @interface UserField {
 }
