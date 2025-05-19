@@ -2,10 +2,12 @@ package org.trips.service_framework.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cache.Cache;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 import org.trips.service_framework.clients.RealmClient;
+import org.trips.service_framework.clients.request.RealmAuthenticateRequest;
 import org.trips.service_framework.clients.request.RealmUserSearchRequest;
 import org.trips.service_framework.clients.response.RealmClientsVerifyResponse;
 import org.trips.service_framework.clients.response.RealmSessionInfoResponse;
@@ -15,6 +17,7 @@ import org.trips.service_framework.configs.CacheConfig;
 import org.trips.service_framework.exceptions.AccessDeniedException;
 import org.trips.service_framework.exceptions.CacheNotFoundException;
 import org.trips.service_framework.exceptions.NotFoundException;
+import org.trips.service_framework.exceptions.UnauthorizedException;
 import org.trips.service_framework.utils.StringUtils;
 
 import javax.servlet.http.Cookie;
@@ -31,26 +34,30 @@ public class AuthService {
     private final RealmClient realmClient;
     private final CacheManager cacheManager;
 
-    public String authenticateCookieSession(List<Cookie> cookies) {
+    @Value("${service.client-id}")
+    private String clientId;
+
+    public RealmSessionInfoResponse.UserDetail authenticateCookieSession(List<Cookie> cookies, boolean authorizationRequired) {
         StringBuilder cookieBuilder = new StringBuilder();
         for (Cookie cookie : cookies) {
             cookieBuilder.append(StringUtils.concatWithSeparatorExtension("=", ";", cookie.getName(), cookie.getValue()));
         }
 
-        RealmSessionInfoResponse response = realmClient.getSessionInfo(cookieBuilder.toString());
+        List<String> clientIds = authorizationRequired ? List.of(clientId) : List.of();
+        RealmSessionInfoResponse response = realmClient.authorize(cookieBuilder.toString(), RealmAuthenticateRequest.of(clientIds));
         if (response.getStatus().getCode() != 200) {
-            throw new AccessDeniedException("forbidden: invalid access token");
+            throw new UnauthorizedException("Authentication Failed! Invalid Access Token");
         }
-        return response.getData().getUserId();
+        return response.getData();
     }
 
     public String authenticateClientIdSecret(String clientId, String clientSecret) {
         RealmClientsVerifyResponse response = realmClient.verifyClientIdSecret(clientId, clientSecret);
         if (response.getStatus().getCode() != 200) {
-            throw new AccessDeniedException("forbidden: invalid access token");
+            throw new UnauthorizedException("Authentication Failed! Invalid Access Token");
         }
         if (!Objects.nonNull(response.getData()) || !response.getData().isActive()) {
-            throw new AccessDeniedException("forbidden: invalid clientId or secret");
+            throw new UnauthorizedException("Authentication Failed! Invalid Access Token");
         }
         return response.getData().getClientId();
     }

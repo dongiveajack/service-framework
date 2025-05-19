@@ -24,6 +24,7 @@ public class FeignClientConfig {
             requestTemplate.header("Content-Type", "application/json");
             requestTemplate.header("Accept", "application/json");
             requestTemplate.header("saas-namespace", Context.getNamespaceId());
+            requestTemplate.header("x-namespace-id", Context.getNamespaceId());
             requestTemplate.header("Client-Id", clientId);
             requestTemplate.header("Client-Secret", clientSecret);
         };

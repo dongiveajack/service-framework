@@ -15,8 +15,8 @@ ext {
     springBootVersion = "2.7.1"
 }
 
-group "com.github.ironman19933"
-version "3.4.7"
+group "com.github.dongiveajack"
+version "4.0.2"
 
 sourceCompatibility = '11'
 

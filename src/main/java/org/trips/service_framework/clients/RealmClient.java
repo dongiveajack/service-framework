@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.trips.service_framework.aop.FeignClientAdvice;
+import org.trips.service_framework.clients.request.RealmAuthenticateRequest;
 import org.trips.service_framework.clients.request.RealmUserSearchRequest;
 import org.trips.service_framework.clients.response.RealmClientsVerifyResponse;
 import org.trips.service_framework.clients.response.RealmSessionInfoResponse;
@@ -22,6 +23,9 @@ import org.trips.service_framework.exceptions.handlers.feignClientExceptionHandl
 @FeignClientAdvice(RealmExceptionHandler.class)
 @FeignClient(name = "realm", url = "${realm.base-url}")
 public interface RealmClient {
+    @RequestMapping(method = RequestMethod.POST, value = "/sessioninfo/authorize")
+    RealmSessionInfoResponse getSessionInfo(@RequestHeader("Cookie") String cookie, @RequestBody RealmAuthenticateRequest request);
+
     @RequestMapping(method = RequestMethod.GET, value = "/sessioninfo")
     RealmSessionInfoResponse getSessionInfo(@RequestHeader("Cookie") String cookie);
 
@@ -30,4 +34,7 @@ public interface RealmClient {
 
     @RequestMapping(method = RequestMethod.POST, value = "/api/v1/whitelisted-users/search")
     RealmUserResponse getUsers(@RequestBody RealmUserSearchRequest searchBody);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/sessioninfo/authorize")
+    RealmSessionInfoResponse authorize(@RequestHeader("Cookie") String cookie, @RequestBody RealmAuthenticateRequest request);
 }

@@ -3,8 +3,10 @@ package org.trips.service_framework.exceptions.handlers;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MissingPathVariableException;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.trips.service_framework.exceptions.AccessDeniedException;
 import org.trips.service_framework.exceptions.RealmException;
 import org.trips.service_framework.exceptions.ServiceException;
+import org.trips.service_framework.exceptions.UnauthorizedException;
 import org.trips.service_framework.models.responses.BaseResponse;
 import org.trips.service_framework.models.responses.StatusResponse;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,7 @@ import java.util.NoSuchElementException;
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
     protected ResponseEntity<Object> handleException(Exception ex) {
-        log.error("RestExceptionHandler: {}: ", ex.getClass().getSimpleName(), ex);
+        log.error("ExceptionHandler: {}: ", ex.getClass().getSimpleName(), ex);
         StatusResponse status = StatusResponse.builder()
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
                 .statusMessage(ex.getMessage())
@@ -78,6 +80,40 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    protected ResponseEntity<Object> handleAccessDeniedException(AccessDeniedException ex, WebRequest request) {
+        log.error("AccessDeniedException: ", ex);
+
+        StatusResponse status = StatusResponse.builder()
+                .statusCode(HttpStatus.FORBIDDEN.value())
+                .statusMessage(ex.getMessage())
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(status)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(value = {UnauthorizedException.class})
+    protected ResponseEntity<Object> handleUnauthorizedException(UnauthorizedException ex, WebRequest request) {
+        log.error("UnauthorizedException: ", ex);
+
+        StatusResponse status = StatusResponse.builder()
+                .statusCode(HttpStatus.UNAUTHORIZED.value())
+                .statusMessage(ex.getMessage())
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(status)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     @Override
