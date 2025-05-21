@@ -8,6 +8,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.trips.service_framework.aop.Authenticate;
 import org.trips.service_framework.audit.dtos.AllowedPermissions;
 import org.trips.service_framework.clients.response.RealmSessionInfoResponse;
@@ -84,9 +85,19 @@ public class AuthenticateAspect {
     }
 
     private Set<String> getAllowedPermissions(HttpServletRequest request) {
-        String requestURI = request.getRequestURI();
-        String method = request.getMethod();
-        String key = String.format("%s:%s", method, requestURI);
-        return allowedPermissions.getPermissions(key);
+        String apiKey = String.format("%s:%s", request.getMethod(), request.getRequestURI());
+
+        Set<String> apiPatterns = allowedPermissions.getPermissions().keySet();
+        String matchedPattern = findMatchingPattern(apiKey, apiPatterns);
+
+        return allowedPermissions.getPermissions(matchedPattern);
+    }
+
+    private String findMatchingPattern(String requestUri, Set<String> patterns) {
+        AntPathMatcher matcher = new AntPathMatcher();
+        return patterns.stream()
+                .filter(pattern -> matcher.match(pattern, requestUri))
+                .findFirst()
+                .orElse(null);
     }
 }
