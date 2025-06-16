@@ -16,12 +16,13 @@ ext {
 }
 
 group "com.github.ironman19933"
-version "3.4.8"
+version "3.4.8-beta2"
 
 sourceCompatibility = '11'
 
 repositories {
     mavenCentral()
+    mavenLocal()
 }
 
 dependencies {
@@ -80,4 +81,20 @@ publishing {
             from components.java
         }
     }
+}
+
+def groupIdPath = project.group.toString().replace('.', '/')
+def moduleName = project.name
+def moduleVersion = project.version.toString()
+def modulePath = "${System.getProperty("user.home")}/.m2/repository/${groupIdPath}/${moduleName}/${moduleVersion}"
+
+tasks.register("deleteFromMavenLocal", Delete) {
+    description = "Deletes this module version from ~/.m2/repository"
+    delete file(modulePath)
+}
+
+tasks.register("reinstallToMavenLocal") {
+    description = "Deletes from mavenLocal and publishes again"
+    dependsOn tasks.named("deleteFromMavenLocal")
+    finalizedBy tasks.named("publishToMavenLocal")
 }
