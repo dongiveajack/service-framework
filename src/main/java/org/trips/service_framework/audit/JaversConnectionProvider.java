@@ -1,6 +1,5 @@
 package org.trips.service_framework.audit;
 
-import org.javers.core.Javers;
 import org.javers.repository.sql.ConnectionProvider;
 import org.springframework.jdbc.datasource.DataSourceUtils;
 
