@@ -25,8 +25,8 @@ public class AuditLogController {
 
     private final AuditLogService auditLogService;
 
-    @PostMapping("/changes")
     @Authenticate
+    @PostMapping("/changes")
     public AuditResponse audit(@RequestBody AuditRequest request) {
         var data = auditLogService.getAuditLogs(request.getEntityId(), request.getEntityClass());
         return AuditResponse.builder()

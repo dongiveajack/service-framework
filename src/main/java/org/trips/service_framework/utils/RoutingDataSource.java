@@ -1,11 +1,9 @@
 package org.trips.service_framework.utils;
 
 import com.zaxxer.hikari.HikariDataSource;
+import lombok.extern.slf4j.Slf4j;
 import org.flywaydb.core.Flyway;
-import org.springframework.beans.factory.ObjectProvider;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jdbc.datasource.lookup.AbstractRoutingDataSource;
-import org.trips.service_framework.configs.DataSourcePropertiesConfig;
 import org.trips.service_framework.configs.FaasDataSourceProperties;
 
 import javax.sql.DataSource;
@@ -18,12 +16,10 @@ import java.util.Objects;
  * @author anomitra on 11/06/25
  */
 
-public class FaasRoutingDataSource {
+@Slf4j
+public class RoutingDataSource {
 
-    private AbstractRoutingDataSource getAbstractRoutingDataSource(
-            List<FaasDataSourceProperties> propertiesList,
-            boolean doMigrate
-    ) {
+    private AbstractRoutingDataSource getAbstractRoutingDataSource(List<FaasDataSourceProperties> propertiesList, boolean doMigrate) {
         AbstractRoutingDataSource routingDataSource = new AbstractRoutingDataSource() {
             @Override
             protected Object determineCurrentLookupKey() {
@@ -42,6 +38,7 @@ public class FaasRoutingDataSource {
                 routingDataSource.setDefaultTargetDataSource(dataSource);
             }
             if (doMigrate) {
+                log.info("------------- EXECUTING FLYWAY MIGRATIONS -------------");
                 Flyway.configure()
                         .dataSource(dataSource)
                         .locations("classpath:db/migration")
@@ -55,10 +52,10 @@ public class FaasRoutingDataSource {
     }
 
     public static DataSource of(List<FaasDataSourceProperties> propertiesList) {
-        return new FaasRoutingDataSource().getAbstractRoutingDataSource(propertiesList, true);
+        return new RoutingDataSource().getAbstractRoutingDataSource(propertiesList, true);
     }
 
     public static DataSource ofJavers(List<FaasDataSourceProperties> propertiesList) {
-        return new FaasRoutingDataSource().getAbstractRoutingDataSource(propertiesList, false);
+        return new RoutingDataSource().getAbstractRoutingDataSource(propertiesList, false);
     }
 }

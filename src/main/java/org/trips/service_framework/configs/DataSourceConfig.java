@@ -2,9 +2,9 @@ package org.trips.service_framework.configs;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-import org.trips.service_framework.utils.FaasRoutingDataSource;
+import org.trips.service_framework.utils.RoutingDataSource;
 
 import javax.sql.DataSource;
 
@@ -12,12 +12,12 @@ import javax.sql.DataSource;
  * @author anomitra on 09/06/25
  */
 
-@Component
+@Configuration
 @RequiredArgsConstructor
 public class DataSourceConfig {
     @Bean
     @Primary
     public DataSource routingDataSource(DataSourcePropertiesConfig dataSourceConfig) {
-        return FaasRoutingDataSource.of(dataSourceConfig.getDataSources());
+        return RoutingDataSource.of(dataSourceConfig.getDataSources());
     }
 }

@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.trips.service_framework.configs.DataSourcePropertiesConfig;
-import org.trips.service_framework.utils.FaasRoutingDataSource;
+import org.trips.service_framework.utils.RoutingDataSource;
 
 import javax.sql.DataSource;
 
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
 public class JaversDatasourceConfig {
     @Bean(name = "auditRoutingDataSource")
     public DataSource auditRoutingDataSource(DataSourcePropertiesConfig dataSourceConfig) {
-        return FaasRoutingDataSource.ofJavers(dataSourceConfig.getAuditDataSources());
+        return RoutingDataSource.ofJavers(dataSourceConfig.getAuditDataSources());
     }
 
     @Bean(name = "JpaHibernateConnectionProvider")
