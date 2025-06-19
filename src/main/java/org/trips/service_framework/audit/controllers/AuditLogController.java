@@ -2,6 +2,7 @@ package org.trips.service_framework.audit.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.http.HttpStatus;
+import org.trips.service_framework.aop.Authenticate;
 import org.trips.service_framework.audit.requests.AuditRequest;
 import org.trips.service_framework.audit.responses.AuditResponse;
 import org.trips.service_framework.audit.services.AuditLogService;
@@ -24,6 +25,7 @@ public class AuditLogController {
 
     private final AuditLogService auditLogService;
 
+    @Authenticate
     @PostMapping("/changes")
     public AuditResponse audit(@RequestBody AuditRequest request) {
         var data = auditLogService.getAuditLogs(request.getEntityId(), request.getEntityClass());

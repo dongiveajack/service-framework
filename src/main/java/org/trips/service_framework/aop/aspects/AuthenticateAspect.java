@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import static org.trips.service_framework.utils.Constants.*;
 
@@ -34,6 +35,9 @@ public class AuthenticateAspect {
     @Value("${realm.authentication.enabled:true}")
     private Boolean isAuthEnabled;
 
+    @Value("${realm.supported-namespaces}")
+    private Set<String> supportedNamespaces;
+
     private final AuthService authService;
 
     @Around("@annotation(org.trips.service_framework.aop.Authenticate)")
@@ -41,7 +45,12 @@ public class AuthenticateAspect {
         HttpServletRequest request = HttpUtils.getRequest();
 
         String namespaceId = HttpUtils.readMandatoryHeader(request, NAMESPACE_ID_HEADER);
-
+        if (!supportedNamespaces.contains(namespaceId)) {
+            throw new AccessDeniedException(String.format(
+                    "Namespace ID %s is not onboarded, please check the namespace ID again",
+                    namespaceId
+            ));
+        }
         String userId;
         if (Boolean.TRUE.equals(isAuthEnabled)) {
             String clientId = HttpUtils.readHeader(request, CLIENT_ID_HEADER);
