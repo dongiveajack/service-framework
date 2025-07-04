@@ -38,6 +38,7 @@ public class RoutingDataSource {
             }
             if (Objects.isNull(defaultDataSource)) {
                 defaultDataSource = dataSource;
+                log.info("Default data source is set to: {}", defaultDataSource.getJdbcUrl());
             }
             if (doMigrate && props.getFlywayMigrate()) {
                 log.info("------------- EXECUTING FLYWAY MIGRATIONS -------------");
