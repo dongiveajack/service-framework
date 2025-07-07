@@ -19,7 +19,8 @@ import java.util.Objects;
 @Slf4j
 public class RoutingDataSource {
 
-    private AbstractRoutingDataSource getAbstractRoutingDataSource(List<FaasDataSourceProperties> propertiesList, boolean doMigrate) {
+    private AbstractRoutingDataSource getAbstractRoutingDataSource(List<FaasDataSourceProperties> propertiesList,
+                                                                   boolean doMigrate) {
         AbstractRoutingDataSource routingDataSource = new AbstractRoutingDataSource() {
             @Override
             protected Object determineCurrentLookupKey() {
@@ -27,26 +28,30 @@ public class RoutingDataSource {
             }
         };
         Map<Object, Object> targetDataSources = new HashMap<>();
-        for (var props: propertiesList){
+        HikariDataSource defaultDataSource = null;
+        for (var props : propertiesList) {
             HikariDataSource dataSource = props.initializeDataSourceBuilder().type(HikariDataSource.class).build();
             dataSource.setMinimumIdle(props.getMinimumIdle());
             dataSource.setMaximumPoolSize(props.getMaximumPoolSize());
-            for (var namespace: props.getNamespaces()) {
+            for (var namespace : props.getNamespaces()) {
                 targetDataSources.put(namespace, dataSource);
             }
-            if (Objects.isNull(routingDataSource.getResolvedDefaultDataSource())) {
-                routingDataSource.setDefaultTargetDataSource(dataSource);
+            if (Objects.isNull(defaultDataSource)) {
+                defaultDataSource = dataSource;
+                log.info("Default data source is set to: {}", defaultDataSource.getJdbcUrl());
             }
-            if (doMigrate) {
+            if (doMigrate && props.getFlywayMigrate()) {
                 log.info("------------- EXECUTING FLYWAY MIGRATIONS -------------");
                 Flyway.configure()
                         .dataSource(dataSource)
+                        .baselineOnMigrate(true)
                         .locations("classpath:db/migration")
                         .load()
                         .migrate();
             }
         }
         routingDataSource.setTargetDataSources(targetDataSources);
+        routingDataSource.setDefaultTargetDataSource(defaultDataSource);
         routingDataSource.afterPropertiesSet();
         return routingDataSource;
     }

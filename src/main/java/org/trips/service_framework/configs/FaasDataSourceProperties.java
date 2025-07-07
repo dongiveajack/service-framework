@@ -14,4 +14,5 @@ public class FaasDataSourceProperties extends DataSourceProperties {
     private List<String> namespaces;
     private Integer minimumIdle;
     private Integer maximumPoolSize;
+    private Boolean flywayMigrate = Boolean.FALSE;
 }
