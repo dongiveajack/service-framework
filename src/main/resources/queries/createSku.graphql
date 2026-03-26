@@ -1,0 +1,7 @@
+mutation CreateSKU($sku: CreateSKU!) {
+    createSKU(sku: $sku) {
+        id
+        code
+        name
+    }
+}

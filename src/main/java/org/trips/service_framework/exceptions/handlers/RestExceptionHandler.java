@@ -1,5 +1,9 @@
 package org.trips.service_framework.exceptions.handlers;
 
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingPathVariableException;
+import org.springframework.web.servlet.NoHandlerFoundException;
+import org.trips.service_framework.exceptions.RealmException;
 import org.trips.service_framework.exceptions.ServiceException;
 import org.trips.service_framework.models.responses.BaseResponse;
 import org.trips.service_framework.models.responses.StatusResponse;
@@ -26,12 +30,11 @@ import java.util.NoSuchElementException;
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {Exception.class})
-    protected ResponseEntity<Object> handleException(RuntimeException ex, WebRequest request) {
-        log.error("Error : ", ex);
-        String errMsg = "Error Occurred " + ex.getMessage();
+    protected ResponseEntity<Object> handleException(Exception ex) {
+        log.error("RestExceptionHandler: {}: ", ex.getClass().getSimpleName(), ex);
         StatusResponse status = StatusResponse.builder()
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .statusMessage(errMsg)
+                .statusMessage(ex.getMessage())
                 .statusType(StatusResponse.Type.ERROR)
                 .build();
 
@@ -44,12 +47,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {NoSuchElementException.class, EntityNotFoundException.class})
     protected ResponseEntity<Object> handleNoSuchElementException(RuntimeException ex, WebRequest request) {
-        log.error("Error : ", ex);
-        String bodyOfResponse = "No Such Element Exception " + ex.toString();
+        String bodyOfResponse = String.format("%s: %s", ex.getClass().getSimpleName(), ex);
+        log.error(bodyOfResponse);
 
         StatusResponse status = StatusResponse.builder()
                 .statusCode(HttpStatus.NO_CONTENT.value())
-                .statusMessage(bodyOfResponse)
+                .statusMessage(ex.getMessage())
                 .statusType(StatusResponse.Type.ERROR)
                 .build();
 
@@ -62,12 +65,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {ServiceException.class})
     protected ResponseEntity<Object> handleServiceException(ServiceException ex, WebRequest request) {
-        log.error("Error : ", ex);
-        String bodyOfResponse = "Service Exception " + ex.toString();
+        log.error("ServiceException: ", ex);
 
         StatusResponse status = StatusResponse.builder()
                 .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
-                .statusMessage(bodyOfResponse)
+                .statusMessage(ex.getMessage())
                 .statusType(StatusResponse.Type.ERROR)
                 .build();
 
@@ -80,7 +82,7 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        log.error("Error : ", ex);
+        log.error("MethodArgumentNotValidException: ", ex);
         Map<String, String> errors = new HashMap<>();
         ex.getBindingResult().getAllErrors().forEach((error) -> {
             String fieldName = ((FieldError) error).getField();
@@ -88,11 +90,9 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
             errors.put(fieldName, errorMessage);
         });
 
-        String bodyOfResponse = "Error " + errors.toString();
-
         StatusResponse statusResponse = StatusResponse.builder()
                 .statusCode(HttpStatus.BAD_REQUEST.value())
-                .statusMessage(bodyOfResponse)
+                .statusMessage(errors.toString())
                 .statusType(StatusResponse.Type.ERROR)
                 .build();
 
@@ -101,5 +101,65 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(value = {RealmException.class})
+    protected ResponseEntity<Object> handleRealmException(RealmException ex, WebRequest request) {
+        StatusResponse status = StatusResponse.builder()
+                .statusCode(ex.getResponse().status())
+                .statusMessage(ex.getResponse().reason())
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(status)
+                .build();
+
+        return ResponseEntity.status(ex.getResponse().status()).body(response);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleHttpRequestMethodNotSupported(HttpRequestMethodNotSupportedException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        StatusResponse statusResponse = StatusResponse.builder()
+                .statusCode(HttpStatus.METHOD_NOT_ALLOWED.value())
+                .statusMessage(ex.getMessage())
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(statusResponse)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(response);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingPathVariable(MissingPathVariableException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        StatusResponse statusResponse = StatusResponse.builder()
+                .statusCode(HttpStatus.INTERNAL_SERVER_ERROR.value())
+                .statusMessage(ex.getMessage())
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(statusResponse)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleNoHandlerFoundException(NoHandlerFoundException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        StatusResponse statusResponse = StatusResponse.builder()
+                .statusCode(HttpStatus.NOT_FOUND.value())
+                .statusMessage(ex.getMessage())
+                .statusType(StatusResponse.Type.ERROR)
+                .build();
+
+        BaseResponse response = BaseResponse.builder()
+                .status(statusResponse)
+                .build();
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 }
